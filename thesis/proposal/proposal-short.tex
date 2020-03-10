@@ -16,11 +16,15 @@ Firstly, the redescription mining data model is a tuple of 3 sets: $entities,\ a
 In a nutshell, a redescription is a pair of descriptions with disjoint views and sufficiently similar supports. % cite here
 The similarity of two supports can be measured by a distance function. If the similarity is above a threshold then the two descriptions form a redescription.
 
-One classic example of redescription mining is about finding bio-climatic niche. In the example, we want to find out the relation between temperature and the distribution of the lynxes on the map. The first query is to find the geographical area where the maximum March temperature is in a specific range. The second query is to find the geographical area on the map where the lynxes inhabit. If we can find a pair of queries, one from each set of queries, such that the results of them, i.e spatial data, overlap at a certain predefined threshold; then we have successfully found a redescription.
-
-% to here
+One classic example of redescription mining is about finding bio-climatic niche. In the example, we want to find out the relation between temperature and the distribution of mammals, e.g. lynxes, on the map. The first query can be about finding the geographical area where the maximum March temperature is in a specific range. The second query can be about finding the geographical area on the map where the lynxes inhabit. If we can find a pair of queries, one from each set of queries, such that the results of them, i.e spatial data, overlap at a certain predefined threshold; then we have successfully found a redescription.
 
 If we keep going deeper from here, redescription mining can be branched out by the way we define the data structure, special constrains, etc. Among various types of data those can be mined, Boolean data is a common one, which requires it own techniques and tricks to deal with.
-%Boolean data structure
-The problem of Boolean data with a hierarchy is an intriguing scenario where an additional dimension of data structure is introduced.
+Boolean data structure is a special case of categorical data structure, where there are only two possible values of either $True$ or $False$.
+% what's special about Boolean data algorithms?
+The problem of Boolean data with a hierarchy is an intriguing scenario where an additional dimension of data structure is introduced. The hierarchical information can be stored separately in a different table or even embedded into the attributes names, e.g. by prefixing, themselves.
+
+Continuing with the finding bio-climatic niche, the presence of lynxes in an area can be represented by a Boolean values: $True$ (present), or $False$ (not present). The taxonomies of biological classifications can be implanted to add the hierarchy to the data. For example we can prefix species names by their families.
+% how it affect the algorithms
+
+The introduced hierarchical information can be exploited to prune candidates more efficiently during the mining process.
 \end{document}
