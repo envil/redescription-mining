@@ -1,0 +1,4 @@
+mlxtend==0.18.0
+pipdeptree==1.0.0
+wheel==0.35.1
+xlrd==1.2.0
