@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xspace}
+\usepackage{amsmath}
+
+\newcommand{\algname}[1]{\texttt{#1}}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+  \algrenewcommand\algorithmicensure{\textbf{Output:}}
+  \algnewcommand{\Input}{\Require}
+  \algnewcommand{\Output}{\Ensure}
+  \algrenewtext{Function}[2]{%
+    \algorithmicfunction\ \algname{#1}\ensuremath{\left(#2\right)}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+  
+%% Data model
+\newcommand{\Attributes}{\mathcal{A}}
+\newcommand{\attribute}{a}
+\newcommand{\Objects}{\mathcal{O}}
+\newcommand{\object}{o}
+\newcommand{\Entities}{\mathcal{E}}
+\newcommand{\entity}{e}
+\newcommand{\Views}{\mathcal{V}}
+\newcommand{\View}{V}
+
+%\newcommand{\Table}{\textcolor{red}{T}}
+\newcommand{\Table}{\mathbf{D}}
+
+\newcommand{\Data}{\mathcal{D}}
+
+\newcommand{\Queries}{\mathcal{Q}}
+\newcommand{\query}{q}
+\newcommand{\lquery}{p}
+\newcommand{\rquery}{q}
+
+\newcommand{\Exy}{\Entities_{xy}}
+\newcommand{\Exx}{\Entities_{11}}
+\newcommand{\Exo}{\Entities_{10}}
+\newcommand{\Eox}{\Entities_{01}}
+\newcommand{\Eoo}{\Entities_{00}}
+
+\newcommand{\Emm}{\Entities_{??}}
+\newcommand{\Emo}{\Entities_{?0}}
+\newcommand{\Eom}{\Entities_{0?}}
+\newcommand{\Emx}{\Entities_{?1}}
+\newcommand{\Exm}{\Entities_{1?}}
+
+\newcommand{\EVxy}[1]{\Exy(#1)}
+\newcommand{\EVxx}[1]{\Exx(#1)}
+\newcommand{\EVxo}[1]{\Exo(#1)}
+\newcommand{\EVox}[1]{\Eox(#1)}
+\newcommand{\EVoo}[1]{\Eoo(#1)}
+
+\newcommand{\Nxy}{\abs{\Exy}}
+\newcommand{\Nxx}{\abs{\Exx}}
+\newcommand{\Nxo}{\abs{\Exo}}
+\newcommand{\Nox}{\abs{\Eox}}
+\newcommand{\Noo}{\abs{\Eoo}}
+
+\newcommand{\Nmm}{\abs{\Emm}}
+\newcommand{\Nmo}{\abs{\Emo}}
+\newcommand{\Nom}{\abs{\Eom}}
+\newcommand{\Nmx}{\abs{\Emx}}
+\newcommand{\Nxm}{\abs{\Exm}}
+
+\newcommand{\NVxy}[1]{\abs{\Exy(#1)}}
+\newcommand{\NVxx}[1]{\abs{\Exx(#1)}}
+\newcommand{\NVxo}[1]{\abs{\Exo(#1)}}
+\newcommand{\NVox}[1]{\abs{\Eox(#1)}}
+\newcommand{\NVoo}[1]{\abs{\Eoo(#1)}}
+
+
+\newcommand{\True}{\mathrm{true}}
+\newcommand{\False}{\mathrm{false}}
+
+\newcommand{\distance}{d}
+\newcommand{\similar}{\sim}
+
+\newcommand{\lop}{\circ} 
+\newcommand{\pvalue}{\ensuremath{p\text{\nobreakdash-value}}\xspace}
+
+\newcommand{\redescription}{r}
+
+\newcommand{\jacc}{J}
+
+\newcommand{\iLHS}{1}
+\newcommand{\iRHS}{2}
+
+%% Algorithm names
+\newcommand{\reremi}{\algname{ReReMi}\xspace}
+\newcommand{\algMID}{\algname{MID}\xspace}
+
+% %% Math operators
+% \DeclareMathOperator{\supp}{supp}
+% \DeclareMathOperator{\att}{att}
+% \DeclareMathOperator{\views}{views}
+% \DeclareMathOperator{\view}{view}
+
+\begin{document}
+\begin{algorithm}[tb]
+\caption{Sketch of the \algMID{} algorithm.}
+  \label{alg:MID}
+\begin{algorithmic}[1]
+\small
+  \Require Two Boolean data tables $\Table_1$ and $\Table_2$, similarity $\similar$, maximum \pvalue{} $p_{\max}$, number of queries to select $N$, and maximum level $\kappa$.
+  \Ensure Redescriptions $\mathcal{R}$.
+  \For{side $i \in \{1, 2\}$} %\Comment{for each view separately}
+   \State $\Queries^{(0)}_i \gets \{ \query : \query$ is a closed frequent itemset from $\Table_i$ or its negation and $ \pvalue(\query) \leq p_{\max}\}$ \label{alg:MID:mine} %\Comment{computing the \pvalue{} for the independent items \textit{null-model}}
+   \State $\Queries^{(1)}_i \gets$  $N$ queries with the lowest \pvalue from $\Queries^{(0)}_i$ 
+   \For{level $k \in \{1,\dots,(\kappa-1)\}$}
+     \State $\Queries^{(k+1)}_i \gets \Queries^{(k)}_i$
+     \For{operator $\lop \in \{\land, \lor\}$} % \Comment{combine queries using conjunctions and disjunctions}
+        \State $\Queries^{(k+1)}_i \gets \Queries^{(k+1)}_i \cup \{ \query \lop \query' : \query, \query' \in \Queries^{(k)}_i, \pvalue(\query \lop \query') \leq p_{\max}\}$ \label{alg:MID:combine}
+  \EndFor
+   \State $\Queries^{(k+1)}_i \gets$  $N$ queries with the lowest \pvalue from $\Queries^{(k+1)}_i$ \label{alg:MID:filter}
+  \EndFor
+  \EndFor
+  \State $\mathcal{R} \gets \{(\lquery, \rquery) \in \Queries^{(\kappa)}_1 \times \Queries^{(\kappa)}_2  : \lquery \similar \rquery\}$ \label{alg:MID:pair} %\Comment{collect query pairs across the views with sufficient accuracy}
+  \State \textbf{return} $\mathcal{R}$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[tb]
+\caption{Sketch of the \reremi algorithm.}
+  \label{alg:reremi}
+\begin{algorithmic}[1]
+\small
+  \Require Two data tables $\Table_1$ and $\Table_2$, similarity $\similar$, number of initial candidates $k_p$, and beam width $k_i$.
+  \Ensure Redescriptions $\mathcal{R}$.
+\State $\mathcal{R} \gets \emptyset$
+\State $\mathcal{I} \gets \{ k_p \text{ best initial singleton redescriptions}\}$ \label{alg:reremi:pairs}
+%(l_\iLHS,l_\iRHS)\in\col{L}(V_\iLHS) \times \col{L}(V_\iRHS)\}
+\For{$S \in \mathcal{I}$} \label{alg:reremi:ext-start}
+    \State $\mathcal{K} \gets \{ S \}$  
+    \State $F_1(S), F_2(S) \gets \text{free attributes for } S$  \label{alg:reremi:initfs}
+    \If{$F_1(S) \neq \emptyset \text{ or } F_2(S) \neq \emptyset$}
+        \State $\mathcal{L} \gets \{ S \}$  \label{alg:reremi:ext-start2}
+    \EndIf
+    \While {$\mathcal{L} \neq \emptyset$}  \label{alg:reremi:while-start} 
+        \For{each $R \in \mathcal{L}$}
+           \For{side $s \in \{1, 2\}$ and operator $\circ \in \{ \lor, \land \}$} \label{alg:reremi:eachso-start}
+               \If{$R$ can be extended on side $s$ with operator $\circ$ and literal $l \in F_s(R)$}
+                  \State $\mathcal{K} \gets \mathcal{K} \cup  \{$best
+                    such extension of $R\}$ \label{alg:reremi:ext}
+               \EndIf
+           \EndFor \label{alg:reremi:eachso-end}
+        \EndFor
+        \State $\mathcal{K} \gets \{ k_i$  best redescriptions from $\mathcal{K}$, with updated free attributes$\}$ \label{alg:reremi:kcand} 
+        % k_i \text{ bests non identical redescriptions from }\mathcal{D}, \text{ with updated free attributes.}$
+        \State $\mathcal{L} \gets \{ R \in \mathcal{K}: F_1(R) \neq \emptyset \text{ or } F_2(R) \neq \emptyset \}$ \label{alg:reremi:extc}
+        \EndWhile
+    \State $\mathcal{R} \gets \mathcal{R} \cup \mathcal{K}$\label{alg:reremi:ext-end}
+\EndFor 
+\State \textbf{return} $\mathcal{R}$
+\end{algorithmic}
+\end{algorithm}
+\end{document}
