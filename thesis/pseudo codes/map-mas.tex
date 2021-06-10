@@ -1,0 +1,114 @@
+\documentclass{article}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xspace}
+\usepackage{amsmath}
+
+\newcommand{\algname}[1]{\texttt{#1}}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+  \algrenewcommand\algorithmicensure{\textbf{Output:}}
+  \algnewcommand{\Input}{\Require}
+  \algnewcommand{\Output}{\Ensure}
+  \algrenewtext{Function}[2]{%
+    \algorithmicfunction\ \algname{#1}\ensuremath{\left(#2\right)}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+  
+%% Data model
+\newcommand{\Attributes}{\mathcal{A}}
+\newcommand{\attribute}{a}
+\newcommand{\Objects}{\mathcal{O}}
+\newcommand{\object}{o}
+\newcommand{\Entities}{\mathcal{E}}
+\newcommand{\entity}{e}
+\newcommand{\Views}{\mathcal{V}}
+\newcommand{\View}{V}
+
+%\newcommand{\Table}{\textcolor{red}{T}}
+\newcommand{\Table}{\mathbf{D}}
+
+\newcommand{\Data}{\mathcal{D}}
+
+\newcommand{\Queries}{\mathcal{Q}}
+\newcommand{\Tract}{\mathcal{T}}
+\newcommand{\TIDList}{\mathcal{TID}}
+\newcommand{\CandStore}{\mathcal{CS}}
+\newcommand{\QueriesStore}{\mathcal{QS}}
+\newcommand{\UnionSupp}{\mathcal{U}}
+\newcommand{\IntersectSupp}{\mathcal{I}}
+\newcommand{\candidate}{c}
+\newcommand{\accuracy}{acc}
+\newcommand{\query}{q}
+\newcommand{\lquery}{p}
+\newcommand{\rquery}{q}
+
+\newcommand{\InitialCandidates}{\mathcal{IC}}
+\newcommand{\CandidatesMap}{\mathcal{CM}}
+
+
+\newcommand{\True}{\mathrm{true}}
+\newcommand{\False}{\mathrm{false}}
+
+\newcommand{\distance}{d}
+\newcommand{\similar}{\sim}
+
+\newcommand{\lop}{\circ} 
+\newcommand{\pvalue}{\ensuremath{p\text{\nobreakdash-value}}\xspace}
+
+\newcommand{\redescription}{r}
+\newcommand{\Redescription}{\mathcal{R}}
+
+\newcommand{\jacc}{J}
+
+\newcommand{\iLHS}{1}
+\newcommand{\iRHS}{2}
+
+%% Algorithm names
+\newcommand{\algMAS}{\algname{MAS}\xspace}
+\newcommand{\algMAP}{\algname{MAP}\xspace}
+
+% %% Math operators
+% \DeclareMathOperator{\supp}{supp}
+% \DeclareMathOperator{\att}{att}
+% \DeclareMathOperator{\views}{views}
+% \DeclareMathOperator{\view}{view}
+
+\begin{document}
+\begin{algorithm}[tb]
+\caption{Sketch of the \algMAS{} algorithm.}
+  \label{alg:MAS}
+\begin{algorithmic}[1]
+\small
+  \Require Two Boolean data tables $\Table_1$ and $\Table_2$, similarity $\similar$, minimum number of variable size $z_{\min}$, maximum number of variable size $z_{\max}$, minimum support $supp_{\min}$, minimum accuracy $acc_{min}$.
+  \Ensure Redescriptions $\mathcal{R}$.
+  \For{side $s \in \{1, 2\}$} %\Comment{for each view separately}
+    \State $\InitialCandidates^{(0)}_s \gets$ calculate the initial candidates on each side \label{alg:MAS:mine} %\Comment{compute the initial candidates}
+    \State $\CandidatesMap \gets (\emptyset, \emptyset)$
+    \State $\TIDList \gets (\emptyset, \emptyset)$
+    \State $\QueriesStore \gets \emptyset$
+    \For{$i, col\_id, candidate \in \InitialCandidates_s$}
+      \For{$r \in supp(candidate)$}
+        \State $\Tract_r \gets \{ k=(s, col\_id, len(\CandidatesMap_s^{col\_id})\}$
+      \EndFor
+      \State $\CandidatesMap_s^{col\_id} \gets \CandidatesMap_s^{col\_id} \cup i$
+      \State $\TIDList_s^k \gets \TIDList_s^k \cup i$
+    \EndFor
+  \EndFor
+  \State $\CandStore \gets mod\_eclat(\Tract)$
+  \For{$(\candidate_0, \candidate_1) \in \CandStore$ \textbf{where} $len(\candidate_0) > 0 \land len(\candidate_1) > 0$}
+    \State $s_s \gets \TIDList.get\_supports(\candidate_s)$ for $s \in \{1, 2\}$
+    \If {$len(s_0) = 0 \lor len(s_0) \leq supp_{\min} \lor len(s_1) = 0 \lor len(s_1) \leq supp_{\min}$}
+      \State \textbf{continue}
+    \EndIf
+    \State $\UnionSupp \gets s_0 \cup s_1$
+    \State $\IntersectSupp \gets s_0 \cap s_1$
+    \State $\accuracy \gets len(\IntersectSupp)/len(\UnionSupp)$
+    \If {$\accuracy \geq \accuracy_{\min} \land supp_{\IntersectSupp} \geq supp_{\min}$}
+      \State $\QueriesStore \gets \QueriesStore \cup (\candidate_0, \candidate_1, s_0, s_1, acc)$
+    \EndIf
+  \EndFor
+  \State $\Redescription \gets fromQueriesPair(\QueriesStore)$
+  \State \Return $\Redescription$
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}
