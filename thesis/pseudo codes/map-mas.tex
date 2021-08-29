@@ -25,6 +25,7 @@
 
 %\newcommand{\Table}{\textcolor{red}{T}}
 \newcommand{\Table}{\mathbf{D}}
+\newcommand{\DataSize}{\mathbf{N}}
 
 \newcommand{\Data}{\mathcal{D}}
 
@@ -49,7 +50,6 @@
 \newcommand{\False}{\mathrm{false}}
 
 \newcommand{\distance}{d}
-\newcommand{\similar}{\sim}
 
 \newcommand{\lop}{\circ} 
 \newcommand{\pvalue}{\ensuremath{p\text{\nobreakdash-value}}\xspace}
@@ -78,48 +78,27 @@
   \label{alg:MAP}
 \begin{algorithmic}[1]
 \small
-  \Require Two Boolean data tables $\Table_1$ and $\Table_2$, similarity $\similar$, minimum number of variable size $z_{\min}$, maximum number of variable size $z_{\max}$, minimum support $supp_{\min}$, minimum accuracy $acc_{min}$.
+  \Require Two Boolean data tables $\Table_1$ and $\Table_2$ with number of entities $\DataSize$, minimum variable size $z_{\min}$, maximum variable size $z_{\max}$, minimum support $supp_{\min}$, minimum accuracy $acc_{min}$.
   \Ensure Redescriptions $\mathcal{R}$.
   \For{side $s \in \{1, 2\}$} %\Comment{for each view separately}
     \State $\InitialCandidates_s \gets$ calculate the initial candidates on each side \label{alg:MAP:mine} %\Comment{compute the initial candidates}
     \State $\CandidatesMap \gets (\emptyset, \emptyset)$
     \State $\TIDList \gets (\emptyset, \emptyset)$
-    \State $\CandidatesMap = (\emptyset, \emptyset)$
-    \State $\Tract \gets (\emptyset$ for $numberOfRow(\Table))$
-    \For{$i, c \in \InitialCandidates_s$}
-      \State $supps \gets support(\candidate_s)$
-      \If {$len(supps) < supp_{min}$}
-        \State {\textbf{continue}}
-      \EndIf
-      \State $col\_id \gets$ column id of $c$
-      \State $k \gets (s, col\_id, len(\CandidatesMap_{(s, col\_id)})$
-      \State $\CandidatesMap_{(s, col\_id)} \gets \CandidatesMap_{(s, col\_id)} \cup i$
-      \State $\TIDList_{(s, k)} \gets \TIDList_{(s, k)} \cup supps$
-      \For{$r \in supps$}
-        \State $\Tract_r \gets \{ \Tract_r \cup k\}$
-      \EndFor
-    \EndFor
+    \State $\Tract \gets$ convert data into transactional format for ECLAT
     \State $\CandStore_s \gets mod\_eclat(\Tract, z_{\min}, z_{\max}, supp_{min})$
   \EndFor
-  \State $\QueriesStore \gets \emptyset$
+  \State $\Redescription \gets \emptyset$
   \For{$\candidate_0 \in \CandStore_0$}
-    \For{$\candidate_1 \in \CandidatesMap_1$}
+  \For{$\candidate_1 \in \CandStore_1$}
       \State $supps_s \gets \TIDList.get\_supports(\candidate_s)$ for $s \in \{1, 2\}$
-      \If {$supps_0 = \emptyset \lor len(supps_0) < supp_{\min} \lor supps_1 = \emptyset \lor len(supps_1) \leq supp_{\min}$}
-        \State \textbf{continue}
-      \EndIf
       \State $\UnionSupp \gets supps_0 \cup supps_1$
-      \If{$\UnionSupp = \emptyset$}
-        \State \textbf{continue}
-      \EndIf
       \State $\IntersectSupp \gets supps_0 \cap supps_1$
-      \State $\accuracy \gets len(\IntersectSupp)/len(\UnionSupp)$
-      \If {$\accuracy \geq \accuracy_{\min} \land supp_{\IntersectSupp} \geq supp_{\min}$}
-        \State $\QueriesStore \gets \QueriesStore \cup (\candidate_0, \candidate_1, supps_0, supps_1, acc)$
+      \State $\accuracy \gets |\IntersectSupp|/|\UnionSupp|$
+      \If {$\accuracy \geq \accuracy_{\min} \land |\IntersectSupp| \geq supp_{\min}$}
+        \State $\Redescription \gets \{\Redescription \cup (\candidate_0, \candidate_1, supps_0, supps_1, acc)\}$
       \EndIf
     \EndFor
   \EndFor
-  \State $\Redescription \gets fromQueriesPair(\QueriesStore)$
   \State \Return $\Redescription$
 \end{algorithmic}
 \end{algorithm}
@@ -129,40 +108,23 @@
   \label{alg:MAS}
 \begin{algorithmic}[1]
 \small
-  \Require Two Boolean data tables $\Table_1$ and $\Table_2$, similarity $\similar$, minimum number of variable size $z_{\min}$, maximum number of variable size $z_{\max}$, minimum support $supp_{\min}$, minimum accuracy $acc_{min}$.
+  \Require Two Boolean data tables $\Table_1$ and $\Table_2$ with number of entities $\DataSize$, minimum variable size $z_{\min}$, maximum variable size $z_{\max}$, minimum support $supp_{\min}$, minimum accuracy $acc_{min}$.
   \Ensure Redescriptions $\mathcal{R}$.
   \State $\InitialCandidates \gets$ calculate the initial candidates on both side \label{alg:MAS:mine} %\Comment{compute the initial candidates}
   \State $\CandidatesMap \gets (\emptyset, \emptyset)$
   \State $\TIDList \gets (\emptyset, \emptyset)$
-  \State $\Tract \gets (\emptyset$ for $numberOfRow(\Table))$
-  \For{$i, \candidate \in \InitialCandidates$}
-    \State $(s, col\_id) \gets$ (side of $\candidate$, column id of $\candidate$)
-    \State $k \gets (s, col\_id, len(\CandidatesMap_{(s, col\_id)})$
-    \State $\CandidatesMap_{(s, col\_id)} \gets \CandidatesMap_{(s, col\_id)} \cup i$
-    \State $supps \gets support(\candidate_s)$
-    \State $\TIDList_{(s, k)} \gets \TIDList_{(s, k)} \cup supps$
-    \For{$r \in supps$}
-      \State $\Tract_r \gets \{ \Tract_r \cup k\}$
-    \EndFor
-  \EndFor
+  \State $\Tract \gets$ convert data into transactional format for ECLAT
   \State $\CandStore \gets mod\_eclat(\Tract, z_{\min}, z_{\max}, supp_{min})$
-  \State $\QueriesStore \gets \emptyset$
-  \For{$(\candidate_0, \candidate_1) \in \CandStore$ \textbf{where} $len(\candidate_0) > 0 \land len(\candidate_1) > 0$}
+  \State $\Redescription \gets \emptyset$
+  \For{$(\candidate_0, \candidate_1) \in \CandStore$}
     \State $supps_s \gets \{\TIDList.get\_supports(\candidate_s)$ : $s \in \{1, 2\}\}$
-    \If {$supps_0 = \emptyset \lor supps_1 = \emptyset \lor len(supps_0) \leq supp_{\min} \lor len(supps_1) = 0 \lor len(supps_1) \leq supp_{\min}$}
-      \State \textbf{continue}
-    \EndIf
     \State $\UnionSupp \gets supps_0 \cup supps_1$
-    \If{$\UnionSupp = \emptyset$}
-      \State \textbf{continue}
-    \EndIf
     \State $\IntersectSupp \gets supps_0 \cap supps_1$
-    \State $\accuracy \gets len(\IntersectSupp)/len(\UnionSupp)$
+    \State $\accuracy \gets |\IntersectSupp|/|\UnionSupp|$
     \If {$\accuracy \geq \accuracy_{\min}$}
-      \State $\QueriesStore \gets \QueriesStore \cup (\candidate_0, \candidate_1, supps_0, supps_1, acc)$
+      \State $\Redescription \gets \{\Redescription \cup (\candidate_0, \candidate_1, supps_0, supps_1, acc)\}$
     \EndIf
   \EndFor
-  \State $\Redescription \gets fromQueriesPair(\QueriesStore)$
   \State \Return $\Redescription$
 \end{algorithmic}
 \end{algorithm}
