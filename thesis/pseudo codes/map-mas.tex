@@ -83,9 +83,8 @@
   \For{side $s \in \{1, 2\}$} %\Comment{for each view separately}
   \State $\CandidatesMap \gets (\emptyset, \emptyset)$
   \State $\TIDList \gets (\emptyset, \emptyset)$
-  \State $\InitialCandidates_s \gets$ filter and calculate the initial candidates \label{alg:MAP:mine} %\Comment{compute the initial candidates}
-    \State $\Tract \gets$ convert data into transactional format from $\InitialCandidates_s$
-    \State $\CandStore_s \gets eclat(\Tract, z_{\min}, z_{\max}, supp_{\min})$
+  \State $\Tract \gets$ filter and convert data into transactional format
+  \State $\CandStore_s \gets eclat(\Tract, z_{\min}, z_{\max}, supp_{\min})$
   \EndFor
   \State $\Redescription \gets \emptyset$
   \For{$\candidate_1 \in \CandStore_1$}
@@ -112,8 +111,7 @@
   \Ensure Redescriptions $\mathcal{R}$.
   \State $\CandidatesMap \gets (\emptyset, \emptyset)$
   \State $\TIDList \gets (\emptyset, \emptyset)$
-  \State $\InitialCandidates \gets$ filter and calculate the initial candidates \label{alg:MAS:mine} %\Comment{compute the initial candidates}
-  \State $\Tract \gets$ convert data into transactional format from $\InitialCandidates$
+  \State $\Tract \gets$ filter and convert data into transactional format     
   \State $\CandStore \gets eclat(\Tract, z_{\min}, z_{\max}, supp_{\min})$
   \State $\Redescription \gets \emptyset$
   \For{$(\candidate_1, \candidate_2) \in \CandStore$}
