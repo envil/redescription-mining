@@ -1,0 +1,6 @@
+\Title{\uef@pdf@title}
+\Author{\@author}
+\Keywords{\uef@keywords}
+\Subject{\uef@pdf@subject}
+\Publisher{\uef@s@universityname}
+\endinput

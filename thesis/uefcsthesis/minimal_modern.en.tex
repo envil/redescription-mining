@@ -1,0 +1,83 @@
+%%
+%% This is file `minimal_modern.en.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% uefcsthesis.dtx  (with options: `ex,en,modern')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2018 by Pauli Miettinen <pauli.miettinen@uef.fi>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%% http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%% 
+%% 
+%% This is a minimal example of using the uefcsthesis class.
+%% This generates an English MSc thesis with one-sided layout.
+%% To compile, use either lualatex or xelatex, for example,
+%% $ lualatex minimal_modern.en.tex
+%% $ biber minimal_modern.en
+%% $ lualatex minimal_modern.en.tex
+%% or use latexmk:
+%% $ latexmk -lualatex minimal_modern.en.tex
+%%
+\documentclass[mscthesis,english,oneside,biblatex]{uefcsthesis}
+
+%% Correct the below with the name of your bibliography file
+\addbibresource{minimal.bib}
+
+%% Replace all capital text with your own information.
+\title{TITLE} % Title of the thesis
+\author{GIVEN NAME}{FAMILY NAME} % Your name
+\date{MONTH YEAR} % The month and year of handing in your thesis
+\city{CITY} % Either Kuopio or Joensuu
+\firstsupervisor{GIVEN FAMILY} % Name of the first supervisor
+\secondsupervisor{GIVEN FAMILY} % Name of the second supervisor, if any
+\keywords{KEYWORD1\sep KEYWORD2\sep ETC} % Keywords must be separated with \sep
+
+%% To get the ACM CCS classification, you can visit
+%% https://dl.acm.org/ccs/ccs.cfm
+%% There you can find a tool to generate LaTeX code for the classification
+%% Copy it here. You don't need to copy the XML at the begin, though.
+%% For example,
+%% \ccsdesc[500]{Some Class}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  WRITE YOUR ENGLISH ABSTRACT HERE
+\end{abstract}
+
+\frontmatter
+\tableofcontents
+\mainmatter
+
+\chapter{Introduction}
+\label{cha:intro}
+
+WRITE YOUR INTRODUCTION HERE
+
+WRITE THE REST OF THE THESIS HERE
+
+THIS IS AN EXAMPLE OF USING CITATIONS:
+Graph generators are important \citep{metzler18random}.
+\citet{kalofolias18from} discuss sets of redescriptions.
+
+%% Next comes the references
+\printbibliography[heading=bibintoc]
+
+\backmatter % Do not remove!
+%% Possible appendices come here
+\end{document}
+\endinput
+%%
+%% End of file `minimal_modern.en.tex'.

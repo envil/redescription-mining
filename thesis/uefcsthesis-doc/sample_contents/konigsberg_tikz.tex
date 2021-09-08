@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+  [solmu/.style={circle,
+    draw=black,
+    inner sep=0pt,
+    minimum size=7mm,
+    node distance=5mm},
+  spacer/.style={circle,
+    minimum size=7mm,
+    node distance=5mm}]
+  \node[solmu](v1){};
+  \node[spacer](s1)[right=of v1]{};
+  \node[solmu](v2)[above=of s1]{};
+  \node[solmu](v3)[below=of s1]{};
+  \node[spacer](s2)[right=of s1]{};
+  \node[solmu](v4)[right=of s2]{};
+  \draw (v1) to [out=90, in=180] (v2);
+  \draw (v1) to [out=10, in=270] (v2);
+  \draw (v1) to (v4);
+  \draw (v1) to [out=350, in=90] (v3);
+  \draw (v1) to [out=270, in=180] (v3);
+  \draw (v2) to (v4);
+  \draw (v3) to (v4);
+\end{tikzpicture}

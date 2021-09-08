@@ -1,0 +1,81 @@
+%%
+%% This is file `minimal_classic.fi.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% uefcsthesis.dtx  (with options: `ex,fi,classic')
+%% 
+%% This is a generated file.
+%% 
+%% Copyright (C) 2018 by Pauli Miettinen <pauli.miettinen@uef.fi>
+%% 
+%% This file may be distributed and/or modified under the conditions of
+%% the LaTeX Project Public License, either version 1.3c of this license
+%% or (at your option) any later version.  The latest version of this
+%% license is in:
+%% 
+%% http://www.latex-project.org/lppl.txt
+%% 
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2006/05/20 or later.
+%% 
+%% 
+%% Tämä on yksinkertainen esimerkki uefcsthesis-luokan käytöstä.
+%% Tämä tiedosto tuottaa pro gradu -tutkielman yksipuoleisella asettelulla.
+%% Tuottaaksesi PDF-tiedoston, käytä pdflatex-ohjelmaa.
+%% Esimerkiksi:
+%% $ pdflatex minimal_classic.fi.tex
+%% $ bibtex minimal_classic.fi
+%% $ pdflatex minimal_classic.fi.tex
+%% Vaihtoehtoisesti voit käyttää latexmk-ohjelmaa:
+%% $ latexmk -pdf minimal_classic.fi.tex
+%%
+\documentclass[mscthesis,finnish,oneside]{uefcsthesis}
+
+%% Korvaa isolla kirjoitetut tekstit omilla tiedoillasi.
+\title{OTSIKKO} % Työsi otsikko
+\author{ETUNIMI}{SUKUNIMI} % Nimesi
+\date{KUUKAUSI VUOSI} % Työsi valmistumiskuukausi ja -vuosi
+\city{KAUPUNKI} % Joko Kuopio tai Joensuu
+\firstsupervisor{ETUNIMI SUKUNIMI} % Ensimmäisen ohjaajan nimi
+\secondsupervisor{ETUNIMI SUKUNIMI} % Toisen ohjaajan, jos on, nimi
+\keywords{AVAINSANA1\sep AVAINSANA2\sep JNE} % Avainsanat erotetaan \sep-komennolla
+
+%% ACM:n CCS-luokittelun LaTeX-komennot saa luotua ACM:n työkalulla osoitteessa
+%% https://dl.acm.org/ccs/ccs.cfm
+%% Kopioi työkalun tuottama LaTeX-koodi tähän (alun XML-koodia ei tarvitse
+%% kopioida). Esimerkiksi:
+%% \ccsdesc[500]{Some Class}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  KIRJOITA SUOMENKIELINEN TIIVISTELMÄSI TÄHÄN
+\end{abstract}
+
+\frontmatter
+\tableofcontents
+\mainmatter
+
+\chapter{Johdanto}
+\label{cha:johdanto}
+
+KIRJOITA JOHDANTOKAPPALEESI TÄHÄN
+
+KIRJOITA LOPUT TYÖSTÄSI TÄHÄN
+
+TÄMÄ ON ESIMERKKI VIITTAUSTEN KÄYTÖSTÄ:
+Verkkogeneraattorit ovat hyödyllisiä \citep{metzler18random}.
+\citet{kalofolias18from} etsivät jälleenkuvausten joukkoja.
+
+%% Seuraavaksi tulee viiteluettelo
+%% Korvaa alta minimal oman lähdetietokantatiedostosi nimellä
+\bibliography{minimal}
+
+\backmatter % Älä poista!
+%% Mahdolliset liitteet tulevat tähän
+\end{document}
+\endinput
+%%
+%% End of file `minimal_classic.fi.tex'.

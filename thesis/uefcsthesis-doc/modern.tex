@@ -1,0 +1,194 @@
+% -*- coding: utf-8 -*-
+%
+% Tämä on esimerkkitiedosto uefcsthesis-luokan käytöstä.
+%
+% Tämä tiedosto on tarkoitettu käytettäväksi LuaLaTeX- ja XeLaTeX-ohjelmilla.
+% LaTeX- ja pdfLaTeX-ohjelmia varten on toinen esimerkkitiedosto, classic.tex.
+%
+\documentclass[gradu,finnish,biblatex,twoside,pdfa]{uefcsthesis}
+% Ylläoleva rivi tekee suomenkielisen kaksipuoleisena tulostettavan gradun.
+% Kommentoi se ja poista kommentti allaolevalta riviltä tehdäksesi yksipuoleisen
+% suomenkielisen kandintyön
+%\documentclass[kandi,finnish,biblatex,polyglossia,oneside]{uefcsthesis}
+
+% Tässäkohti ladataan paketit, joita tarvitaan uefcsthesis-luokan lisäksi
+\usepackage{lipsum} % Tuottaa lipsumia, ei tarvita normaaleissa töissä
+
+\usepackage{siunitx} % Hyvä paketti fyysisten suureiden tulostamiseen, 
+% ks. https://ctan.org/pkg/siunitx?lang=en
+
+\usepackage[linesnumbered,lined,ruled]{algorithm2e} % Yksi mahdollinen paketti pseudokoodin tekemiseen LaTeXilla,
+% ks. https://ctan.org/pkg/algorithm2e
+% Toinen vaihtoehto on algorithmic[x]-paketti, https://ctan.org/pkg/algorithmicx
+
+\usepackage{listings} % Lähdekoodin (ei pseudokoodin) esittämiseen
+% ks. https://ctan.org/pkg/listings
+% Käytettäessä LuaLaTeXia tai XeLaTeXia, listings pystyy lukemaan UTF-8-koodattuja
+% tiedostoja ilman listingsutf8-pakettia.
+
+\usepackage[labelformat=parens]{subcaption} % Paketti "alikuvien" (1(a), 1(b) jne) tekemiseen,
+% ks. https://ctan.org/pkg/subcaption
+% Vaihtoehto on subfig-paketti, https://ctan.org/pkg/subfig?lang=en
+
+\usepackage{tikz} % Paketti kuvien piirtämiseen LaTeXilla
+% ks. https://ctan.org/pkg/pgf?lang=en
+\usetikzlibrary{arrows,positioning} % Suurin osa TikZ:n ominaisuuksista on
+% erilaisissa kirjastoissa
+% TikZ:llä voi myös määritellä erilaisia tyylejä; nämä ovat Huom!-laatikoita varten
+\tikzstyle{huombox} = [draw=red, fill=black!10, thick, rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+\tikzstyle{huomtitle} = [fill=red, text=white]
+
+
+\usepackage{xspace} % Mahdollistaa tekstimakrot, jotka jättävät välin ennen seuraavaa
+% tekstiä, ellei se ole välimerkki
+% ks. https://ctan.org/pkg/xspace
+
+% Seuraava rivi kertoo lähdeviitetietokannan nimen.
+% Tämä tiedosto käytää BibLaTeX- ja biber-ohjelmia, ei BibTeX-ohjelmaa,
+% mutta tietokannan muoto on sama molemmilla. 
+\addbibresource{sample_contents/references.bib}
+
+% Jos käytetään polyglossia-paketia, venäjän tuki ladataan tässä; uefcsthesis lataa suomen sekä amerikan ja britti-englannin.
+% \setotherlanguage{russian}
+% Käytettäessä babel-pakettia, uusia kieliä ei voi enää lisätä jälkeenpäin,
+% mutta \foreignlanguage-komento toimii
+\newfontfamily\russianfont[Script=Cyrillic]{Tempora} % Tempora on Time New Roman -tyyppinen fontti, jossa on kyriiliset ja kreikkalaiset kirjasimet
+% Makro Kaliningradin nimeksi venäjäksi. Tässä ei normaalisti tarvita makroa, mutta
+% oikea tapa tehdä tämä riippuu siitä, käytetäänkö polyglossia- & fontspec-paketteja
+% vai babel-pakettia "perinteisen" fontinvalinnan kanssa.
+% \xspace makro jättää perään välin, paitsi jos seuraavaksi tulee välimerkki.
+% Vrt. classic.tex
+%\newcommand{\kaliningrad}{\textrussian{Калининград}\xspace} 
+\newcommand{\kaliningrad}{\foreignlanguage{russian}{\russianfont Калининград}\xspace}
+
+% Omat makrot voi määritellä tässä. LaTeX:issa kannattaa käyttää makroja
+% ulkoasun semanttiseen merkitsemiseen. Makrot mahdollistavat lopullisen
+% ulkoasun helpon muuttamisen.
+\newcommand{\e}{\mathrm{e}} % Käytetään pystyä kirjainta Neperin luvulle
+\newcommand{\R}{\mathbb{R}} % Ns. liitutaululihavoitu kirjasin reaalilukujen kunnalle
+% Seuraavat makrot määrittelevät, miten vektoreita ja matriiseja merkitään.
+% Käytetään molemmissa lihavoituja kirjaimia. Käytämme bm-pakettia parempien
+% lihavoitujen matematiikkasymbolien saamiseksi.
+% Vektori v merkitään \vec{v} ja matriisi M merkitään \matr{M} matematiikkatilassa.
+\renewcommand{\vec}[1]{\bm{#1}} % Nuolen sijasta lihavointi
+\newcommand{\matr}[1]{\bm{#1}} % Lihavointi
+
+% Seuraava makro helpottaa termien englanninkielisten vastineiden kirjoittamista
+\newcommand{\engl}[1]{(engl. \enquote{#1})\xspace}
+
+% Yleisimmin käytetyt ohjelmien, datajoukkojen jne. nimet kannattaa määritellä
+% omiksi makroikseen. Pitkiin sanoihin, jotka eivät ole suomea tai jotka ladotaan
+% kirjoituskonefontilla kannattaa merkitä tavutuskohdat. Komento \xspace lisää
+% tekstin perään välin, mikäli seuraava merkki ei ole välimerkki. Tämä ei ole aina
+% paras mahdollinen ratkaisu suomessa, sillä se estää sijapäätteiden käytön. 
+\newcommand{\uefcsthesis}{\texttt{uef\-cs\-thesis}\xspace}
+
+% Kun sanaliitto on yhdyssanan osana, laitetaan sanaliiton ja yhdyssanan toisen
+% osan väliin yhdysviiva joka on eroteltu välilyönnillä sanaliitosta. Normaalisti LaTeX
+% pitää yhdysviivaa hyvänä paikkana tavuttaa, mutta amsmath-paketin komento
+% \nobreakdash estää ei-toivotut tavutukset esim. sanassa "pro gradu -tutkielma".
+% Määritellään komento \progradututkielma tuottamaan tekstin
+% "pro gradu -tutkielma", jolloin voi kirjoittaa esim.
+% "\progradututkielma{ssaan} hän osoittaa".
+% Varmistetaan, että LaTeX ei tavuta yhdysmerkin kohdalta, mutta osaa tavuttaa
+% sanan tutkielma.
+\newcommand{\progradututkielma}{pro gradu \nobreakdash-tut\-ki\-el\-ma\xspace}
+
+% \graphicspath mahdollistaa kuvien sijoittamisen eri kansioon ilman, että
+% kansiota täytyy aina mainita; tämän tiedoston kuvat ovat sample_contents
+% kansiossa.
+% Huom! kaksi aaltosulkua ovat välttämättömät!
+\graphicspath{{sample_contents/}}
+
+%
+% Sitten dokumentin meta-data
+%
+% Otsikko
+\title{Esimerkki Itä-Suomen yliopiston tietojenkäsittelytieteen laitoksen gradu- ja kandidaatintyöpohjan käytöstä}
+% Otsikko englanniksi
+\title[english]{Example of the usage of the BSc and MSc thesis template at University of Eastern Finland's School of Computing}
+% Tekijä muodossa {etunimi/-nimet}{sukunimi}
+\author{Pauli}{Miettinen}
+% Päivämäärä
+\date{\today}
+% Kaupunki (Joensuu tai Kuopio)
+\city{Kuopio}
+% Ensimmäinen ohjaaja
+\firstsupervisor{Pauli Miettinen}
+% Toinen ohjaaja (jos on, muuten kommentoi)
+\secondsupervisor{Toinen Ohjaaja}
+% Avainsanat tulee erottaa \sep-komennolla
+\keywords{tutkielmapohja\sep LaTeX \sep LuaLaTeX \sep XeLaTeX \sep biber \sep BibLaTeX}
+% Avainsanat englannniksi
+\keywords[english]{thesis template \sep LaTeX \sep LuaLaTeX \sep XeLaTeX \sep biber \sep BibLaTeX}
+
+% ACM CSS-luokittelu
+% Oikeat komennot saa luotua ACM:n työkalulla osoitteessa
+% https://dl.acm.org/ccs/ccs.cfm
+% Alun XML-koodia ei tarvitse kopioida.
+\ccsdesc[500]{General and reference~Reference works}
+\ccsdesc[500]{General and reference~General literature}
+\ccsdesc[500]{Applied computing~Document preparation}
+
+%
+% Itse dokumentti alkaa
+% 
+\begin{document}
+% Tehdään kansilehti
+\maketitle
+% Jos dokumentissa on liitteitä, niiden määrä ja sivumäärä (yhteensä) tulee antaa
+% näillä komennoilla
+\numberofappendices{1}
+\appendixpagecount{10}
+% Tehdään tiivistelmäsivu
+\begin{abstract}
+  % Luetaan sisältö toisesta tiedostosta
+  \input{sample_contents/abstract_fi}
+  % Avainsanat kannattaa määritellä alussa.
+\end{abstract}
+% Graduissa ja kandidaatintutkielmissa pitää olla myös englanninkielinen tiivistelmä.
+% Tiivistelmän kielen voi vaihtaa antamalla abstract-ympäristölle valinnaisen parametrin.
+% Lisätään englanninkielinen tiivistelmä
+\begin{abstract}[english]
+  \input{sample_contents/abstract_en}
+\end{abstract}
+
+% \frontmatter aloittaa roomalaisilla numeroilla numeroidut sivut, joihin kuuluvat
+% mahdolliset esipuhe, kiitokset sekä sisällysluettelo.
+% Komento \frontmatter on pakollinen. 
+\frontmatter
+% Esipuhe, jos halutaan
+\begin{preface}
+  Esipuheessa voi kertoa työn synnystä. Viimeisessä kappaleessa voi myös kiittää työn valmistumiseen vaikuttaneita henkilöitä.
+\end{preface}
+% Kiitokset, jos halutaan
+\begin{acknowledgements}
+  Kiitoksissa vain kiitetään; yleensä samassa työssä ei ole sekä esipuhetta että kiitoksia, mutta mikäli esipuhe on pitkä, voi kiitokset siirtää omaksi osakseen.
+\end{acknowledgements}
+% Sisällysluettelo
+\tableofcontents
+
+% \mainmatter aloittaa tutkielman varsinaisen sisällön. Se on myös pakollinen.
+\mainmatter
+
+% Luemme sisällön toisesta tiedostosta.
+% Varsinkin pidemmissä töissä sisältöä kannattaa jakaa eri tiedostoihin, esim. niin
+% että joka luvulla on oma tiedostonsa. 
+\input{sample_contents/body_fi}
+
+% Tulostetaan lähdeviitteet
+\printbibliography[heading=bibintoc] % Hakasuluissa oleva lisää lähdeviitteet sisällysluetteloon
+
+% \backmatter tulee viitteiden jälkeen ja aloittaa työn loppuosan. Komento on
+% jälleen pakollinen vaikkei sen jälkeen tulisi mitään sisältöä.
+\backmatter
+% LaTeX:ista tulevat liitteet tulee laittaa appendices-ympäristön sisään
+\begin{appendices}
+  \input{sample_contents/appendix}
+  % Kuvien ja taulukoiden listat voi myös lisätä tutkielman loppuun
+  % \listoffigures
+  % \listoftables
+\end{appendices}
+
+
+\end{document}
