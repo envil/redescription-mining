@@ -1,0 +1,72 @@
+\chapter{Introduction and problem statement}
+\label{cha:intro}
+With the enormous amount of data we produce nowadays, data mining is becoming more and more prevalent.
+Consequently, the goal with modern data mining methods is not only to discover information from crude data, but also to condense that information down to concise descriptions and insights.
+One such method is redescription mining~\citep{ramakrishnan_turning_2004}.
+In a nutshell, it aims to find different ways to describe the same things.
+
+\chapter{Background Knowledge}
+\label{cha:background}
+In this chapter we will explore the underlying theory of the thesis.
+We will go from more general knowledge to more specific concepts.
+Firstly, the data mining idea and framework are introduced.
+Then we will dig deeper into frequent itemset mining and redescription mining, which are the two main concepts that the thesis is about.
+\section{Data mining}
+Why did data mining come up?
+We will address that question and then introduce some building blocks of the data mining framework in this chapter.
+\subsection{The problems}
+\label{sub:the_problems}
+The invention of the computer changed the way we think about storing and managing data.
+Unlike books in the library nor merchants in the store, data in computer can grow exponentially and instantaneously like never before.
+The need of a systematic way to collect and extract useful information from a big data set started to coin in the late 1980s within company research department  \citep{coenen_datamining_2011}.
+
+One of the first problems that data mining tried to solve is to create decision supports from retail clients transactions and the sales information \citep{coenen_datamining_2011}. 
+The aim is to drive the sales up, by giving out suggestions, promotions and special pricing to the targeted customer based on their behaviors.
+For example, retailers can use the system to find out which items are frequently bought together, then arrange them close to each other to create a reminding effect, which can increase the sale.
+Advance a few decades later, Netflix - a streaming service company - created a system to recommend movies to users based on their favorites and activities \citep{netflix_rs_2016}.
+The most difficult part of such system is that the data is often significantly smaller than the search space.
+An average person can only watch a limited number of movies, while the total number of movies are vastly bigger.
+Nowadays, with the rising of low-cost communicable devices and/or sensors, we need to find efficient ways to deal with the data produced by them \citep{data_mining_iot_2014}.
+% TODO improve this
+
+These are just a few examples of some problems that emerged in the modern time of computing and data mining.
+As we can imagine, the potential of data mining is unbounded.
+
+\subsection{The main building blocks}
+\label{sub:building_blocks}
+There are three main phases of data mining: \textit{data collection}, \textit{data preprocessing}, and \textit{analytical processing}.
+
+Data collection usually involving the use of hardware or software to collect raw data.
+This could be sensors' data of the environment, or user activities data from the application.
+The choice of which data to collect is crucial and can affect greatly of the quality of the result in the later phases.
+
+After the data is collected, it's usually in a form that's difficult to consume directly by the algorithms.
+That's why we need the data preprocessing phase to make the data to be easier to be consumed.
+This could be structuring the data into known format, e.g. multidimensional format, time series, etc.; or removing bad data.
+
+Analytical processing is the most interesting phase where the useful information or insights start to emerge.
+Even though mining processes are different from each other, they often share some similarities and common patterns that we can generalize and apply similar techniques to them.
+One of the technique that we will be focusing on in this thesis is the \textit{frequent itemset mining} \citep{borgelt_fim_2012}.
+
+\section{Frequent itemset mining}
+Frequent itemset mining was originally developed for marketing purpose, as introduced in \autoref{sub:the_problems}.
+The purpose of the algorithm back then was to try to analyze the sale's transactions data to extract information about which items are frequently bought together.
+\subsection{Definitions}
+
+\begin{definition}[Test]
+    Something here
+\end{definition}
+\subsection{Apriori}
+\subsection{ECLAT}
+
+\section{Redescription mining}
+
+
+\chapter{Employing ECLAT for Redescription Mining}
+\label{cha:employment}
+
+\chapter{Experiments}
+\label{cha:experiments}
+
+\chapter{Conclusions}
+\label{cha:conclusions}
