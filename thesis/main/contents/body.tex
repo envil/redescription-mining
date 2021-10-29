@@ -1,5 +1,3 @@
-
-
 \chapter{Introduction and problem statement}
 \label{cha:intro}
 With the enormous amount of data we produce nowadays, data mining is becoming more and more prevalent.
@@ -48,14 +46,15 @@ This could be structuring the data into known format, e.g. multidimensional form
 
 Analytical processing is the most interesting phase where the useful information or insights start to emerge.
 Even though mining processes are different from each other, they often share some similarities and common patterns that we can generalize and apply similar techniques to them.
-One of the technique that we will be focusing on in this thesis is the \textit{frequent itemset mining} \citep{borgelt_fim_2012}.
+One of the technique that we will be focusing on in this thesis is the \ac{fim} \citep{borgelt_fim_2012}.
 
-\section{Frequent itemset mining}
-\acrfull{fim} was originally developed for marketing purpose, as introduced in \autoref{sub:the_problems}.
+\section{\Acl{fim}}
+\Acl{fim} was originally developed for marketing purpose, as introduced in \autoref{sub:the_problems}.
 The purpose of the algorithm back then was to try to analyze the sale's transactions data to extract information about which items are frequently bought together.
-Nowadays the applications of 
+Nowadays, the applications of \acl{fim} expanded to many more domains, with different variety of tasks.
 \subsection{Definitions}
-
+Formally, assume that we have a universe of all possible items $\itemset$. For example, this can be all the possible products in a groceries store.
+Suppose we have a set of $\mathit{n}$ transaction $\transaction{} = \transactionDef{} i$, where $\transaction{i}$ is a combination of items from $\itemset$.
 % \begin{definition}[Test]
 %     Something here
 % \end{definition}

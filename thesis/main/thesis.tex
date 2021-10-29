@@ -32,8 +32,8 @@
 %%
 \documentclass[mscthesis,english,oneside,biblatex]{uefcsthesis}
 \usepackage{datetime}
-\usepackage{amsthm}
-\usepackage[acronym, toc]{glossaries}
+
+\usepackage{acro}
 \newdateformat{monthYearDateFormat}{\monthname[\THEMONTH] \THEYEAR} % The month and year of handing in your thesis
 
 %% Correct the below with the name of your bibliography file
@@ -54,15 +54,9 @@
 %% Copy it here. You don't need to copy the XML at the begin, though.
 %% For example,
 %% \ccsdesc[500]{Some Class}
-\makeglossaries
 
-% \newglossaryentry{latex}
-% {
-%         name=latex,
-%         description={Is a mark up language specially suited for 
-% scientific documents}
-% }
-\newacronym{fim}{FIM}{Frequent Itemset Mining}
+\input{auxiliaries/acronyms.tex}
+\input{auxiliaries/commands.tex}
 
 \begin{document}
 \maketitle
@@ -70,17 +64,17 @@
   \input{contents/abstract.tex}
 \end{abstract}
 
-\printglossary[type=\acronymtype, toctitle=Acronyms]
-
 \frontmatter
+
+\printacronyms[%
+  name = {Abbreviations},
+  sort = false,
+]
+
 \tableofcontents
 \mainmatter
 
 \input{contents/body.tex}
-
-THIS IS AN EXAMPLE OF USING CITATIONS:
-Graph generators are important \citep{metzler18random}.
-\citet{kalofolias18from} discuss sets of redescriptions.
 
 %% Next comes the references
 \printbibliography[heading=bibintoc]
