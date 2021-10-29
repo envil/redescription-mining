@@ -33,6 +33,7 @@
 \documentclass[mscthesis,english,oneside,biblatex]{uefcsthesis}
 \usepackage{datetime}
 \usepackage{amsthm}
+\usepackage[acronym, toc]{glossaries}
 \newdateformat{monthYearDateFormat}{\monthname[\THEMONTH] \THEYEAR} % The month and year of handing in your thesis
 
 %% Correct the below with the name of your bibliography file
@@ -53,12 +54,23 @@
 %% Copy it here. You don't need to copy the XML at the begin, though.
 %% For example,
 %% \ccsdesc[500]{Some Class}
+\makeglossaries
+
+% \newglossaryentry{latex}
+% {
+%         name=latex,
+%         description={Is a mark up language specially suited for 
+% scientific documents}
+% }
+\newacronym{fim}{FIM}{Frequent Itemset Mining}
 
 \begin{document}
 \maketitle
 \begin{abstract}
   \input{contents/abstract.tex}
 \end{abstract}
+
+\printglossary[type=\acronymtype, toctitle=Acronyms]
 
 \frontmatter
 \tableofcontents
