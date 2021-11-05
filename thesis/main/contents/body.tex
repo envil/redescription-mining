@@ -13,7 +13,7 @@ Firstly, the data mining idea and framework are introduced.
 Then we will dig deeper into frequent itemset mining and redescription mining, which are the two main concepts that the thesis is about.
 \section{Data mining}
 Why did data mining come up?
-We will address that question and then introduce some building blocks of the data mining framework in this chapter.
+This chapter will address that question and then introduce some building blocks of the data mining framework.
 \subsection{The problems}
 \label{sub:the_problems}
 The invention of the computer changed the way we think about storing and managing data.
@@ -26,7 +26,8 @@ For example, retailers can use the system to find out which items are frequently
 Advance a few decades later, Netflix - a streaming service company - created a system to recommend movies to users based on their favorites and activities \citep{netflix_rs_2016}.
 The most difficult part of such system is that the data is often significantly smaller than the search space.
 An average person can only watch a limited number of movies, while the total number of movies are vastly bigger.
-Nowadays, with the rising of low-cost communicable devices and/or sensors, we need to find efficient ways to deal with the data produced by them \citep{data_mining_iot_2014}.
+A long with that, nowadays, with the rising of low-cost communicable devices and sensors, we need to find efficient ways to deal with the data produced by them \citep{data_mining_iot_2014}.
+Hence, more sophisticated and clever methods have been invented to deal with the growing of the complexities of the problems.
 % TODO improve this
 
 These are just a few examples of some problems that emerged in the modern time of computing and data mining.
@@ -53,11 +54,48 @@ One of the technique that we will be focusing on in this thesis is the \ac{fim} 
 The purpose of the algorithm back then was to try to analyze the sale's transactions data to extract information about which items are frequently bought together.
 Nowadays, the applications of \acl{fim} expanded to many more domains, with different variety of tasks.
 \subsection{Definitions}
-Formally, assume that we have a universe of all possible items $\itemset$. For example, this can be all the possible products in a groceries store.
-Suppose we have a set of $\mathit{n}$ transaction $\transaction{} = \transactionDef{} i$, where $\transaction{i}$ is a combination of items from $\itemset$.
-% \begin{definition}[Test]
-%     Something here
-% \end{definition}
+Formally, assume that we have a universe of all possible items $\universeOfItemset$.
+For example, this can be all the possible products in a groceries store.
+Suppose we have a set of $\mathit{n}$ transaction $\transaction{} = \transactionDef{}$, where $\transaction{i}$ is a composition of items from $\universeOfItemset$, with $i$ is the \ac{tid}.
+This in turn, could be possible transactions at a groceries store.
+Intuitively, we can see that the size of $\universeOfItemset$ is usually much larger than the size of $\transaction{}$: $|\universeOfItemset| \gg |\transaction{} |$.
+
+A dataset can now be represented in binary representation, where all records have the same length, and each record represents a transaction.
+One item in $\universeOfItemset$ will have it own same position in all records.
+We can see that the length of each record is basically $|\universeOfItemset|$.
+If an item appears in a transaction, it will have value $1$ in the corresponding record, otherwise $0$ (see example in \autoref{tab:market-basket-dataset}).
+This representation is analogous to a matrix where the rows are the records and represents the transactions, and the columns are the items.
+
+\begin{table}[tb]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
+        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
+        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
+        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
+        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
+        5            & \{Broccoli, Carrot, Tomato\} & \texttt{111}                   \\ \hline
+    \end{tabular}
+    \caption{An example of market basket dataset in binary representation}
+    \label{tab:market-basket-dataset}
+\end{table}
+
+A set of items in $\universeOfItemset$ is an \textit{itemset}. We denote the set of $k$ items \kItemset.
+The \textit{support} of an itemset is the frequency where it appears in as a subset of a transaction in the dataset.
+
+\begin{definition}[Support]
+    The support of an itemset $\itemset$ is defined as the fraction of the transactions in the database $\transaction{} = \transactionDef{}$ that contain $\itemset$ as a subset \citep{Aggarwal15}.
+\end{definition}
+
+The support of itemset $\itemset$ is denoted by $\support{I}$.
+The aim of \acl{fim} is to find the itemsets with supports above a predefined \ac{minsup}.
+
+
+\begin{definition}[\Acl{fim}]
+    Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined fraction $\minsup$ of the transactions in $\transaction{}$ \citep{Aggarwal15}.
+\end{definition}
+
 \subsection{Apriori}
 \subsection{ECLAT}
 
