@@ -12,13 +12,14 @@ We will go from more general knowledge to more specific concepts.
 Firstly, the data mining idea and framework are introduced.
 Then we will dig deeper into frequent itemset mining and redescription mining, which are the two main concepts that the thesis is about.
 \section{Data mining}
+\label{sec:datamining}
 Why did data mining come up?
 This chapter will address that question and then introduce some building blocks of the data mining framework.
 \subsection{The problems}
 \label{sub:the_problems}
 The invention of the computer changed the way we think about storing and managing data.
-Unlike books in the library nor merchants in the store, data in computer can grow exponentially and instantaneously like never before.
-The need of a systematic way to collect and extract useful information from a big data set started to coin in the late 1980s within company research department  \citep{coenen_datamining_2011}.
+Unlike books in the library nor merchants in the store, data in computer can grow exponentially and instantaneously with the rate like never before.
+The need of a systematic way to collect and extract useful information from a big data set started to coin in the late 1980s within companies' research departments \citep{coenen_datamining_2011}.
 
 One of the first problems that data mining tried to solve is to create decision supports from retail clients transactions and the sales information \citep{coenen_datamining_2011}. 
 The aim is to drive the sales up, by giving out suggestions, promotions and special pricing to the targeted customer based on their behaviors.
@@ -27,32 +28,40 @@ Advance a few decades later, Netflix - a streaming service company - created a s
 The most difficult part of such system is that the data is often significantly smaller than the search space.
 An average person can only watch a limited number of movies, while the total number of movies are vastly bigger.
 A long with that, nowadays, with the rising of low-cost communicable devices and sensors, we need to find efficient ways to deal with the data produced by them \citep{data_mining_iot_2014}.
-Hence, more sophisticated and clever methods have been invented to deal with the growing of the complexities of the problems.
-% TODO improve this
+Hence, more sophisticated and clever methods are needed; and many have been invented to deal with the growing of the complexities of the problems.
 
 These are just a few examples of some problems that emerged in the modern time of computing and data mining.
 As we can imagine, the potential of data mining is unbounded.
 
 \subsection{The main building blocks}
 \label{sub:building_blocks}
+
 There are three main phases of data mining: \textit{data collection}, \textit{data preprocessing}, and \textit{analytical processing}.
 
 Data collection usually involving the use of hardware or software to collect raw data.
 This could be sensors' data of the environment, or user activities data from the application.
 The choice of which data to collect is crucial and can affect greatly of the quality of the result in the later phases.
 
-After the data is collected, it's usually in a form that's difficult to consume directly by the algorithms.
-That's why we need the data preprocessing phase to make the data to be easier to be consumed.
+After the data is collected, it's usually in a form that's difficult to be consumed directly by the algorithms.
+That's why we need the data preprocessing phase to make the data easier to be consumed.
 This could be structuring the data into known format, e.g. multidimensional format, time series, etc.; or removing bad data.
 
 Analytical processing is the most interesting phase where the useful information or insights start to emerge.
+From the analytical perspective, we can categorize data mining into four "super problems": clustering, classification, \ac{apm} and outlier analysis \citep{Aggarwal15}.
 Even though mining processes are different from each other, they often share some similarities and common patterns that we can generalize and apply similar techniques to them.
-One of the technique that we will be focusing on in this thesis is the \ac{fim} \citep{borgelt_fim_2012}.
+For example, association patterns are somewhat similar to overlapping clusters, where each pattern is corresponding to a cluster.
+
+In the scope of this thesis, we will be more interested on the \acl{apm} problem.
+\Acl{fim} \citep{borgelt_fim_2012} is the most popular model of \acl{apm}.
+
+% Maybe introduce more type of problems here (Aggarwal15 4.1)
 
 \section{\Acl{fim}}
+\label{sec:fim}
 \Acl{fim} was originally developed for marketing purpose, as introduced in \autoref{sub:the_problems}.
-The purpose of the algorithm back then was to try to analyze the sale's transactions data to extract information about which items are frequently bought together.
+The initial purpose of the algorithm was to try to analyze the sale's transactions data to extract information about which items are frequently bought together.
 Nowadays, the applications of \acl{fim} expanded to many more domains, with different variety of tasks.
+
 \subsection{Definitions}
 Formally, assume that we have a universe of all possible items $\universeOfItemset$.
 For example, this can be all the possible products in a groceries store.
@@ -60,26 +69,12 @@ Suppose we have a set of $\mathit{n}$ transaction $\transaction{} = \transaction
 This in turn, could be possible transactions at a groceries store.
 Intuitively, we can see that the size of $\universeOfItemset$ is usually much larger than the size of $\transaction{}$: $|\universeOfItemset| \gg |\transaction{} |$.
 
-A dataset can now be represented in binary representation, where all records have the same length, and each record represents a transaction.
+A dataset can be represented in binary representation, where all records have the same length, and each record represents a transaction.
 One item in $\universeOfItemset$ will have it own same position in all records.
 We can see that the length of each record is basically $|\universeOfItemset|$.
 If an item appears in a transaction, it will have value $1$ in the corresponding record, otherwise $0$ (see example in \autoref{tab:market-basket-dataset}).
-This representation is analogous to a matrix where the rows are the records and represents the transactions, and the columns are the items.
-
-\begin{table}[tb]
-    \centering
-    \begin{tabular}{|l|c|c|}
-        \hline
-        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
-        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
-        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
-        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
-        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
-        5            & \{Broccoli, Carrot, Tomato\} & \texttt{111}                   \\ \hline
-    \end{tabular}
-    \caption{An example of market basket dataset in binary representation}
-    \label{tab:market-basket-dataset}
-\end{table}
+This representation is analogous to a matrix where the rows are the records and represents the transactions, and the columns correspond to the items.
+The presence of the $\mathit{j}$th item in the $\mathit{i}$th transaction is determined by the value of the $\mathit{(i, j)}$th entry.
 
 A set of items in $\universeOfItemset$ is an \textit{itemset}. We denote the set of $k$ items \kItemset.
 The \textit{support} of an itemset is the frequency where it appears in as a subset of a transaction in the dataset.
@@ -91,9 +86,77 @@ The \textit{support} of an itemset is the frequency where it appears in as a sub
 The support of itemset $\itemset$ is denoted by $\support{I}$.
 The aim of \acl{fim} is to find the itemsets with supports above a predefined \ac{minsup}.
 
-
 \begin{definition}[\Acl{fim}]
     Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined fraction $\minsup$ of the transactions in $\transaction{}$ \citep{Aggarwal15}.
+\end{definition}
+
+\begin{table}[tb]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
+        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
+        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
+        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
+        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
+        5            & \{Broccoli, Tomato, Carrot\} & \texttt{111}                   \\ \hline
+    \end{tabular}
+    \caption{An example of market basket dataset in binary representation}
+    \label{tab:market-basket-dataset}
+\end{table}
+\subsection{\Acl{arm}}
+\label{sub:association_rule_mining}
+The output of \ac{fim} can be further processed to find the association rules with \acl{arm}.
+The result of this extra step is a set of rules that can be used to predict the behavior of the users.
+For example, we can come to a finding that people who buy beer might also buy diapers.
+Such strange finding is not quite trivial to thought of, but with the help of \acl{arm}, we can obtain it.
+
+In order to determine whether a rule is credible or not, we need to introduce a new measuring: confidence.
+The confidence of a rule $X \Rightarrow Y$ is the fraction of transactions containing $X$, which also contain $Y$.
+For example in \autoref{tab:market-basket-dataset}, the support of $\{Brocoli, Tomato\}$ is $2/5=0.4$, and the support of $\{Broccoli, Tomato, Carrot\}$ is $1/5=0.2$.
+Hence, the confidence of the rule $\{Brocoli, Tomato\} \Rightarrow \{Carrot\}$ is $0.2 / 0.4 = 0.5$.
+\begin{definition}[Confidence \citep{Aggarwal15}]
+    Let $X$ and $Y$ be two set of items.
+    The confidence $conf(X \cup Y)$ of the rule $X \cup Y$ is the conditional probability of $X \cup Y$ occuring in a transaction, given that the transaction contains $X$.
+    Therefore, the confidence $conf(X \cup Y)$ is defined as follows:
+    \begin{equation}
+        conf(X \Rightarrow Y) = \frac{sup(X \cup Y)}{sup(X)}
+    \end{equation}
+\end{definition}
+In other words, the confidence of a rule $X \Rightarrow Y$ is the conditional probability that a transaction contains the itemset $Y$, given that it contains the itemset $X$.
+
+Now since we have the confidence, the definition of an association rule can be presented as follows:
+\begin{definition}[Association rules \citep{Aggarwal15}]
+    Let $A$ and $B$ be two sets of items.
+    The rule $A \Rightarrow B$ is said to be valid at support level $s$ and confidence level $c$, if the following conditions are satisfied:
+    \begin{enumerate}
+        \item The support of the item set $A$ is at least $s$;
+        \item The confidence of $A \Rightarrow B$ is at least $c$;
+    \end{enumerate}
+    The first criterion ensures that a sufficient number of transactions are relevant to the rule; therefore, it has the required critical mass for it to be considered relevant to the application at hand.
+    The second criterion ensures that the rule has sufficient strength in terms of conditional probabilities.
+    Thus, the two measures quantify different aspects of the association rule.
+\end{definition}
+As we can see the confidence together with the minimum support are the core parameters of the \acl{arm}.
+The minimum support is used in the first phase of \acl{arm} to determine the frequent itemsets.
+And the minimum confidence is used in the second phase to determine the association rules.
+
+The frequent itemset mining phase usually takes up most of the computation time of the whole process.
+Therefore, most of the research work is focused on it.
+We will discuss on some properties that can be used to optimize the frequent itemset mining phase in \autoref{sub:optimization_and_pruning}.
+\subsection{Optimization and pruning}
+\label{sub:optimization_and_pruning}
+During the mining of frequent itemsets, we can apply some properties to speed up the process.
+One common techniques is to use the \acl{smp} to prune the search space:
+\begin{definition}[\Acl{smp} \citep{Aggarwal15}]
+    The support of every subset $J$ of $I$ is at least equal to that of the support of itemset $I$.
+    \begin{equation}
+        sup(J) \geq sup(I) \quad \forall J \subseteq I
+    \end{equation}
+\end{definition}
+This's also known be interpreted as the \acl{dcp}:
+\begin{definition}[\Acl{dcp} \citep{Aggarwal15}]
+    Every subset of a frequent itemset is also frequent.
 \end{definition}
 
 \subsection{Apriori}

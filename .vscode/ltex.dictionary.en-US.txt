@@ -2,3 +2,5 @@ redescription
 itemset
 Redescription
 Apriori
+itemsets
+Monotonicity
