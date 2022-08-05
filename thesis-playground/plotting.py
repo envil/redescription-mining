@@ -45,6 +45,7 @@ def plot_group(target_metric):
     plot_simple(max_var_s1_map_data, 'max_var_s1', target_metric, axes[3][0], 'MAP')
 
     plt.tight_layout()
+    plt.savefig('./plots-output/' + target_metric + '.png')
     plt.show()
 
 
