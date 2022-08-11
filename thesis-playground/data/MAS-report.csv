@@ -1,4 +1,4 @@
-min_itm_in,min_itm_out,min_fin_in,min_fin_out,min_fin_acc,max_var_s0,max_var_s1,left_data_size,right_data_size,candstore_length,queries_length,no_of_redescriptions,queries_support_min,queries_support_max,queries_support_mean,queries_support_median,queries_accuracy_min,queries_accuracy_max,queries_accuracy_mean,queries_accuracy_median,mining_duration,filtering_duration
+min_itm_in,min_itm_out,min_fin_in,min_fin_out,min_fin_acc,max_var_s0,max_var_s1,left_data_size,right_data_size,candstore_length,no_of_queries,no_of_redescriptions,queries_support_min,queries_support_max,queries_support_mean,queries_support_median,queries_accuracy_min,queries_accuracy_max,queries_accuracy_mean,queries_accuracy_median,mining_duration,filtering_duration
 800,850,850,850,0.5,4,4,194,49,9518,4354,4354,800,1045,847.5785485,837,0.5,0.673106646,0.537264557,0.525979928,231.1986518,1.135815859
 820,850,850,850,0.5,4,4,194,49,5541,3078,3078,820,1045,863.3031189,854,0.5,0.673106646,0.538051874,0.526605505,129.8072371,0.821977854
 840,850,850,850,0.5,4,4,194,49,3216,2066,2066,840,1045,879.9801549,872,0.5,0.673106646,0.537822974,0.528930714,79.47346187,0.392001629

@@ -21,7 +21,7 @@ def plot_simple(data, x_label, y_label, ax=None, line_label=None):
 
 
 def plot_group(target_metric):
-    fig, axes = plt.subplots(nrows=4, ncols=2, figsize=(10, 10))
+    fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 10))
 
     plt.suptitle(target_metric)
     plot_simple(min_itm_in_mas_data, 'min_itm_in', target_metric, axes[0][0], 'MAS')
@@ -33,16 +33,16 @@ def plot_group(target_metric):
     plot_simple(min_fin_in_mas_data, 'min_fin_in', target_metric, axes[1][0], 'MAS')
     plot_simple(min_fin_in_map_data, 'min_fin_in', target_metric, axes[1][0], 'MAP')
 
-    plot_simple(min_fin_out_mas_data, 'min_fin_out', target_metric, axes[1][1])
+    # plot_simple(min_fin_out_mas_data, 'min_fin_out', target_metric, axes[1][1], 'MAS')
 
-    plot_simple(min_fin_acc_mas_data, 'min_fin_acc', target_metric, axes[2][0], 'MAS')
-    plot_simple(min_fin_acc_map_data, 'min_fin_acc', target_metric, axes[2][0], 'MAP')
+    plot_simple(min_fin_acc_mas_data, 'min_fin_acc', target_metric, axes[1][1], 'MAS')
+    plot_simple(min_fin_acc_map_data, 'min_fin_acc', target_metric, axes[1][1], 'MAP')
 
-    plot_simple(max_var_s0_mas_data, 'max_var_s0', target_metric, axes[2][1], 'MAS')
-    plot_simple(max_var_s0_map_data, 'max_var_s0', target_metric, axes[2][1], 'MAP')
+    plot_simple(max_var_s0_mas_data, 'max_var_s0', target_metric, axes[2][0], 'MAS')
+    plot_simple(max_var_s0_map_data, 'max_var_s0', target_metric, axes[2][0], 'MAP')
 
-    plot_simple(max_var_s1_mas_data, 'max_var_s1', target_metric, axes[3][0], 'MAS')
-    plot_simple(max_var_s1_map_data, 'max_var_s1', target_metric, axes[3][0], 'MAP')
+    plot_simple(max_var_s1_mas_data, 'max_var_s1', target_metric, axes[2][1], 'MAS')
+    plot_simple(max_var_s1_map_data, 'max_var_s1', target_metric, axes[2][1], 'MAP')
 
     plt.tight_layout()
     plt.savefig('./plots-output/' + target_metric + '.png')
@@ -68,7 +68,7 @@ max_var_s1_map_data = map_data[40:42]
 
 target_metrics = [
     "candstore_length",
-    "queries_length",
+    "no_of_queries",
     "no_of_redescriptions",
     "queries_support_min",
     "queries_support_max",
