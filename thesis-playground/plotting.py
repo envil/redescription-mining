@@ -26,23 +26,29 @@ def plot_group(target_metric):
     plt.suptitle(target_metric)
     plot_simple(min_itm_in_mas_data, 'min_itm_in', target_metric, axes[0][0], 'MAS')
     plot_simple(min_itm_in_map_data, 'min_itm_in', target_metric, axes[0][0], 'MAP')
+    plot_simple(min_itm_in_fp_growth_data, 'min_itm_in', target_metric, axes[0][0], 'FP Growth')
 
     plot_simple(min_itm_out_mas_data, 'min_itm_out', target_metric, axes[0][1], 'MAS')
     plot_simple(min_itm_out_map_data, 'min_itm_out', target_metric, axes[0][1], 'MAP')
+    plot_simple(min_itm_out_fp_growth_data, 'min_itm_out', target_metric, axes[0][1], 'FP Growth')
 
     plot_simple(min_fin_in_mas_data, 'min_fin_in', target_metric, axes[1][0], 'MAS')
     plot_simple(min_fin_in_map_data, 'min_fin_in', target_metric, axes[1][0], 'MAP')
+    plot_simple(min_fin_in_fp_growth_data, 'min_fin_in', target_metric, axes[1][0], 'FP Growth')
 
     # plot_simple(min_fin_out_mas_data, 'min_fin_out', target_metric, axes[1][1], 'MAS')
 
     plot_simple(min_fin_acc_mas_data, 'min_fin_acc', target_metric, axes[1][1], 'MAS')
     plot_simple(min_fin_acc_map_data, 'min_fin_acc', target_metric, axes[1][1], 'MAP')
+    plot_simple(min_fin_acc_fp_growth_data, 'min_fin_acc', target_metric, axes[1][1], 'FP Growth')
 
     plot_simple(max_var_s0_mas_data, 'max_var_s0', target_metric, axes[2][0], 'MAS')
     plot_simple(max_var_s0_map_data, 'max_var_s0', target_metric, axes[2][0], 'MAP')
+    plot_simple(max_var_s0_fp_growth_data, 'max_var_s0', target_metric, axes[2][0], 'FP Growth')
 
     plot_simple(max_var_s1_mas_data, 'max_var_s1', target_metric, axes[2][1], 'MAS')
     plot_simple(max_var_s1_map_data, 'max_var_s1', target_metric, axes[2][1], 'MAP')
+    plot_simple(max_var_s1_fp_growth_data, 'max_var_s1', target_metric, axes[2][1], 'FP Growth')
 
     plt.tight_layout()
     plt.savefig('./plots-output/' + target_metric + '.png')
@@ -65,6 +71,14 @@ min_fin_in_map_data = map_data[20:30]
 min_fin_acc_map_data = map_data[30:38]
 max_var_s0_map_data = map_data[38:40]
 max_var_s1_map_data = map_data[40:42]
+
+fp_growth_data = np.genfromtxt('./data/FP-Growth-report.csv', delimiter=',', names=True)
+min_itm_in_fp_growth_data = fp_growth_data[0:10]
+min_itm_out_fp_growth_data = fp_growth_data[10:20]
+min_fin_in_fp_growth_data = fp_growth_data[20:30]
+min_fin_acc_fp_growth_data = fp_growth_data[30:38]
+max_var_s0_fp_growth_data = fp_growth_data[38:42]
+max_var_s1_fp_growth_data = fp_growth_data[42:46]
 
 target_metrics = [
     "candstore_length",
