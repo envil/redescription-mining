@@ -36,6 +36,33 @@ The aim of \acl{fim} is to find the itemsets with supports above a predefined \a
     Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined fraction $\minsup$ of the transactions in $\transaction{}$.
 \end{definition}
 
+In addition to normal frequent itemset, there are two useful extended concepts of frequent itemset: closed frequent itemset and maximal frequent itemset.
+An itemset $X$ is closed, if none of its supersets have exactly the same support count as $X$ \cite{Aggarwal15}.
+A closed frequent itemset is both closed and frequent.
+\begin{definition}[Closed frequent itemset ]
+    Given $X$ and $Y$ are frequent itemsets at minimum support minsup, $X$ is a closed frequent itemset if:
+    \begin{equation}
+        \forall Y \supset X, supp(Y) < supp(X)
+    \end{equation}
+\end{definition}
+
+A frequent itemset is maximal if none of it superset is frequent \cite{Aggarwal15}.
+
+\begin{definition}
+    Let $F$ is the set of all frequent itemsets. $X$ and $Y$ are frequent itemsets in $F$. $X$ is maximal frequent itemset if:
+    \begin{equation}
+        \forall Y \supset X, Y \notin F
+    \end{equation}
+\end{definition}
+
+There are several observations we can make here:
+\begin{itemize}
+    \item Let $F$ is the set of all frequent itemsets, $C$ is the set of all closed frequent itemsets, and $M$ is the set of all maximal frequent itemsets. $M \subset C \subset F$.
+    \item Closed frequent itemsets keep all the information about all the frequent itemsets. In other words, we can restore the supports of any frequent itemset from the closed frequent itemsets.
+    \item Maximal frequent itemsets do not keep all information about all the frequent itemsets. We only know that all of their subsets are frequent, but we do not know the supports of them.
+\end{itemize}
+
+
 \begin{table}[tb]
     \centering
     \begin{tabular}{|l|c|c|}
@@ -65,7 +92,7 @@ The confidence of a rule $X \Rightarrow Y$ is the fraction of transactions conta
     The confidence $conf(X \cup Y)$ of the rule $X \cup Y$ is the conditional probability of $X \cup Y$ occurring in a transaction, given that the transaction contains $X$.
     Therefore, the confidence $conf(X \cup Y)$ is defined as follows:
     \begin{equation}
-        conf(X \Rightarrow Y) = \frac{sup(X \cup Y)}{sup(X)}
+        conf(X \Rightarrow Y) = \frac{supp(X \cup Y)}{supp(X)}
     \end{equation}
 \end{definition}
 In other words, the confidence of a rule $X \Rightarrow Y$ is the conditional probability that a transaction contains the itemset $Y$, given that it contains the itemset $X$.
@@ -181,7 +208,7 @@ This is called the \acl{smp}:
 \begin{definition}[\Acl{smp} \citep{Aggarwal15}]
     The support of every subset $J$ of $I$ is at least equal to that of the support of itemset $I$.
     \begin{equation}
-        sup(J) \geq sup(I) \quad \forall J \subseteq I
+        supp(J) \geq supp(I) \quad \forall J \subseteq I
     \end{equation}
 \end{definition}
 
@@ -274,7 +301,7 @@ The next important concept of the \ac{eclat} algorithm is the \ac{ec}. The defin
     The equivalence relation partitions the set $P$ into disjoint subsets called \textbf{equivalence class}. The \ac{ec} of an element $X \in P$ is given as $[X] = \{ Y \in P | X \equiv Y \}$.
 \end{definition}
 
-\textbf{TODO!!!} the connection between the equivalence class and the TID sets are not quite clear in this paragraph
+% \textbf{TODO!!!} the connection between the equivalence class and the TID sets are not quite clear in this paragraph
 
 In the \ac{eclat} algorithm, itemsets are in the same class if they have the same $k$ length prefix \citep{zaki2000}, we denote this equivalence relation $\theta_k$.
 By collapsing all the itemsets with the same prefix in the lattice \autoref{fig:item-lattice} together using $\theta_1$, we will have a set of \ac{ec}es: $\{[A], [B], [C], [D]\}$.

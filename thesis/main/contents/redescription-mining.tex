@@ -50,14 +50,14 @@ In the bioclimatic-niche finding example above, a redescription consists of a qu
 For a redescription to satisfy the conditions, it must have similar supports between the two queries.
 The similarity of the two queries $p$ and $q$ is denoted as $\sim$.
 We can use the Jaccard distance to determine the similarity between the supports of the two description.
-The Jaccard distance is based on the Jaccard similarity index.
+The Jaccard distance is based on the \acl{JSI}.
 
-\begin{definition}[Jaccard similarity index \citep{galbrun2018redescription}]
+\begin{definition}[\acl{JSI} \citep{galbrun2018redescription}]
     The Jaccard (similarity) index J between the supports of two descriptions p and q is defined as below:
 
-    \begin{math}
+    \begin{equation}
         J(p, q) = J(supp(p), supp(q)) = \cfrac{\left|supp(p)\cap supp(q)\right|}{\left|supp(p)\cup supp(q)\right|}
-    \end{math}
+    \end{equation}
 \end{definition}
 
 The requirement to calculate $J$ is obviously that none of $supp(q)$ and $supp(p)$ equals $\emptyset$.
@@ -65,9 +65,9 @@ The requirement to calculate $J$ is obviously that none of $supp(q)$ and $supp(p
 \begin{definition}[Jaccard distance \citep{galbrun2018redescription}]
     The Jaccard distance is then defined as:
 
-    \begin{math}
+    \begin{equation}
         1 - J(p, q) = 1 - \cfrac{\left|supp(p)\cap supp(q)\right|}{\left|supp(p)\cup supp(q)\right|}
-    \end{math}
+    \end{equation}
 \end{definition}
 
 Clearly, the smaller the distance is, the more accurate the redescription is.
@@ -78,9 +78,9 @@ From here, we can formulate the formal definition of the redescription.
 \begin{definition}[Redescription \citep{galbrun2018redescription}]
     A redescription in query language $\mathcal{Q}$ over data $\mathcal{D}$ with similarity $\sim$ is a pair of query $(p, q) \in \mathcal{Q} \times \mathcal{Q}$ such that
 
-    \begin{math}
+    \begin{equation}
         p \sim q \text{ and } views(p) \cap views(q) = \emptyset
-    \end{math}
+    \end{equation}
 \end{definition}
 
 \subsection{Redescription mining algorithms}
@@ -95,6 +95,10 @@ If the overlap between the two queries is bigger than a certain threshold, we th
 The \ac{MID} algorithm is an algorithm that follow the \ac{MAP} strategy.
 We can have a look at the pseudocode of the \acl{MID} in Algorithm \ref{alg:MID}.
 The mining for queries steps is in line 2, where the paring part is at line 12.
+
+Recall that in statistic, p-value is the probabilities of the null hypothesis to be true.
+The null hypothesis in this case is that the supports of a query is small.
+The reason this is the hypothesis is that the chance of two disjoint small support sets to have overlap are small.
 
 \begin{algorithm}[tb]
     \caption{Sketch of the \algMID{} algorithm \citep{galbrun2018redescription}.}
@@ -122,4 +126,10 @@ The mining for queries steps is in line 2, where the paring part is at line 12.
 We can see that the \acl{arm} algorithms contribute an important part of the foundation of this redescription mining algorithm category.
 Often times, a suitable \ac{fim} algorithms is the key to create a redescription mining algorithm for a specific problem.
 For example the CHARM-L \citep{zakihsiao2005}, which is a \ac{fim} algorithm that can construct the closed itemset lattice.
-\Citep{zakimohammed2005} then developed a redescription mining algorithm utilizing the CHARM-L algorithm to find the exact conditional redescriptions from the lattice.
+The CHARM-L algorithm was then utilized to develop a redescription mining algorithm to find the exact conditional redescriptions for the lattice \Citep{zakimohammed2005}.
+In the paper, three classes of redescription was formulated: exact, conditional, and approximate.
+An exact redescription has a Jaccard distance = 0, while an approximate redescription has a Jaccard distance > 0.
+A conditional redescription is derived from an approximate redescription and turned into an exact redescription by supplying additional constraints to the queries.
+For instance, we have 2 queries $p$ and $q$ forming a redescription $(p \similar q)$ with a Jaccard distance distance > 0.
+By introducing an additional constraint to both queries: $(p \cap r)$ and $(p \cap r)$, $(p \cap r) \similar (p \cap r)$ could have a Jaccard distance = 0.
+This is denoted by $(p \similar q \mid r)$ where $p$, $q$, and $r$ are queries over some disjoint view $v \in \mathcal{V}$.
