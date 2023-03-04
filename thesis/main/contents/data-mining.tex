@@ -1,0 +1,44 @@
+\section{Data mining}
+\label{sec:datamining}
+Why did data mining was developed?
+This chapter can give some context about that and then introduces some building blocks of the data mining framework.
+\subsection{The problems}
+\label{sub:the_problems}
+The invention of the computer changed the way we think about storing and managing data.
+Unlike books in the library or merchants in the store, data in computers can grow exponentially and instantaneously at a rate like never before.
+The need for a systematic way to collect and extract useful information from a big data set started to coin in the late 1980s within companies' research departments \citep{coenen_datamining_2011}.
+
+One of the first problems that data mining tried to solve is to create decision supports from retail clients' transactions and the sales information \citep{coenen_datamining_2011}.
+The aim is to drive the sales up, by giving out suggestions, promotions, and special pricing to the targeted customer based on their behaviors.
+For example, retailers can use the system to find out which items are frequently bought together, then arrange them close to each other to create a reminding effect, which can increase the sale.
+Advance a few decades later, Netflix - a streaming service company - created a system to recommend movies to users based on their favorites and activities \citep{netflix_rs_2016}.
+The most difficult part of such a system is that the data is often significantly smaller than the search space.
+An average person can only watch a limited number of movies, while the total number of movies is vastly bigger.
+Along with that, nowadays, with the raising of low-cost communicable devices and sensors, we need to find efficient ways to deal with the data produced by them \citep{data_mining_iot_2014}.
+Hence, more sophisticated and clever methods are needed; and many have been invented to deal with the growing of the complexities of the problems.
+
+These are just a few examples of some problems that emerged in the modern time of computing and data mining.
+As we can imagine, the potential of data mining is unbounded.
+
+\subsection{The main building blocks}
+\label{sub:building_blocks}
+
+There are three main phases of data mining: \textit{data collection}, \textit{data wrangling}, and \textit{analytical processing}.
+
+Data collection usually involves the use of hardware or software to acquire raw data.
+This could be sensors' data of the environment, or user activities data from computer applications.
+The choice of which data to collect is crucial and can affect greatly the quality of the result in the later phases.
+
+After the data is collected, it is usually in a form that is difficult to be processed directly by the algorithms.
+That's why we need the data preprocessing phase to make the data easier to be consumed.
+This could be structuring the data into known format, e.g. multidimensional formats, time series, etc.; or removing corrupted data.
+
+Analytical processing is the most interesting phase where useful information or insights start to emerge.
+From the analytical perspective, we can categorize data mining into four "super problems": clustering, classification, \ac{apm} and outlier analysis \citep{Aggarwal15}.
+Even though mining processes are different from each other, they often share some similarities and common patterns that we can generalize and apply similar techniques to them.
+For example, association patterns are somewhat similar to overlapping clusters, where each pattern is corresponding to a cluster.
+
+In the scope of this thesis, we will be more interested on the \acl{apm} problem.
+\Acl{fim} \citep{borgelt_fim_2012} is the most popular model of \acl{apm}.
+
+% Maybe introduce more type of problems here (Aggarwal15 4.1)

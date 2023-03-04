@@ -34,6 +34,13 @@
 \usepackage{datetime}
 \usepackage{tikz}
 \usepackage{acro}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xspace}
+
+\graphicspath{ {./images/} }
 \newdateformat{monthYearDateFormat}{\monthname[\THEMONTH] \THEYEAR} % The month and year of handing in your thesis
 
 %% Correct the below with the name of your bibliography file
@@ -44,8 +51,7 @@
 \author{VIET}{TA} % Your name
 \date{\monthYearDateFormat\today}
 \city{JOENSUU} % Either Kuopio or Joensuu
-\firstsupervisor{Pauli Miettinen} % Name of the first supervisor
-\secondsupervisor{Esther Galbrun} % Name of the second supervisor, if any
+\firstsupervisor{Esther Galbrun} % Name of the first supervisor
 \keywords{DATA MINING\sep REDESCRIPTION MINING\sep FREQUENT ITEMSET MINING\sep APRIORI \sep ECLAT} % Keywords must be separated with \sep
 
 %% To get the ACM CCS classification, you can visit

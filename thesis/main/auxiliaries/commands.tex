@@ -5,3 +5,22 @@
 \newcommand{\itemset}{\mathit{I}}
 \newcommand{\support}[1]{\mathit{sup({#1})}}
 \newcommand{\minsup}{\mathit{minsup}}
+
+
+\newcommand{\algname}[1]{\texttt{#1}}
+\algrenewcommand\algorithmicrequire{\textbf{Input:}}
+  \algrenewcommand\algorithmicensure{\textbf{Output:}}
+  \algnewcommand{\Input}{\Require}
+  \algnewcommand{\Output}{\Ensure}
+  \algrenewtext{Function}[2]{%
+    \algorithmicfunction\ \algname{#1}\ensuremath{\left(#2\right)}}
+
+\newcommand{\algMID}{\algname{MID}\xspace}
+\newcommand{\pvalue}{\ensuremath{p\text{\nobreakdash-value}}\xspace}
+\newcommand{\Queries}{\mathcal{Q}}
+\newcommand{\query}{q}
+\newcommand{\lquery}{p}
+\newcommand{\rquery}{q}
+\newcommand{\lop}{\circ} 
+\newcommand{\Table}{\mathbf{D}}
+\newcommand{\similar}{\sim}

@@ -562,7 +562,7 @@ footskip=13mm,
 \addto\captionsfinnish{\def\listalgorithmcfname{Algoritmiluettelo}}
 \addto\captionsenglish{\def\listalgorithmcfname{List of Algorithms}}
 \addto\captionsbritish{\def\listalgorithmcfname{List of Algorithms}}
-\providecommand{\floatname}[2]{}
+% \providecommand{\floatname}[2]{}
 \addto\captionsfinnish{\floatname{algorithm}{Algoritmi}}
 \addto\captionsengligh{\floatname{algorithm}{Algorithm}}
 \addto\captionsbritish{\floatname{algorithm}{Algorithm}}

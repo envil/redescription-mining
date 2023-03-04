@@ -4,3 +4,4 @@ Redescription
 Apriori
 itemsets
 Monotonicity
+redescriptions
