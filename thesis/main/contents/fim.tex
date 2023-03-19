@@ -5,6 +5,20 @@ The initial goal was to analyze the market basket data to extract information ab
 Nowadays, the applications of \acl{fim} expanded to many more domains, with different variety of tasks.
 
 \subsection{Definitions}
+\begin{table}[tb]
+    \centering
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
+        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
+        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
+        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
+        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
+        5            & \{Broccoli, Tomato, Carrot\} & \texttt{111}                   \\ \hline
+    \end{tabular}
+    \caption{An example of market basket dataset in binary representation}
+    \label{tab:binary-prepresentation}
+\end{table}
 Formally, assume that we have a universe of all possible items $\universeOfItemset$.
 For example, this can be all the possible products in a groceries store.
 Suppose we have a set of $\mathit{n}$ transactions $\transaction{} = \transactionDef{}$, where $\transaction{i}$ is a composition of items from $\universeOfItemset$, with $i$ is the \ac{tid}.
@@ -15,7 +29,7 @@ Such a collection of transactions can be represented in binary representation, w
 One item in $\universeOfItemset$ will have it own same position in all records.
 We can see that the length of each record is basically $|\universeOfItemset|$.
 If an item appears in a transaction, it will have value $1$ in the corresponding record, otherwise $0$.
-We can see this in the example \autoref{tab:market-basket-dataset}, for the first row, only Broccoli was present in the transaction, hence in the binary representation of the transaction, the first position, which corresponding to Broccoli, is set to $1$.
+We can see this in the example \autoref{tab:binary-prepresentation}, for the first row, only Broccoli was present in the transaction, hence in the binary representation of the transaction, the first position, which corresponding to Broccoli, is set to $1$.
 This representation is analogous to a matrix where the rows are the records and represents the transactions, and the columns correspond to the items.
 The presence of the $\mathit{j}$th item in the $\mathit{i}$th transaction is recorded as the value in cell $\mathit{(i, j)}^{th}$.
 
@@ -28,7 +42,7 @@ The \textit{support} of an itemset is the frequency where it appears in as a sub
 \end{definition}
 \begin{sloppypar}
     The support of itemset $\itemset$ is denoted by $\support{I}$.
-    For example in \autoref{tab:market-basket-dataset}, $\support{\{Broccoli, Tomato\}} = 0.4$.
+    For example in \autoref{tab:binary-prepresentation}, $\support{\{Broccoli, Tomato\}} = 0.4$.
 \end{sloppypar}
 The aim of \acl{fim} is to find the itemsets with supports above a predefined \ac{minsup}.
 
@@ -62,22 +76,6 @@ There are several observations we can make here:
     \item Maximal frequent itemsets do not keep all information about all the frequent itemsets. We only know that all of their subsets are frequent, but we do not know the supports of them.
 \end{itemize}
 
-
-\begin{table}[tb]
-    \centering
-    \begin{tabular}{|l|c|c|}
-        \hline
-        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
-        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
-        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
-        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
-        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
-        5            & \{Broccoli, Tomato, Carrot\} & \texttt{111}                   \\ \hline
-    \end{tabular}
-    \caption{An example of market basket dataset in binary representation}
-    \label{tab:market-basket-dataset}
-\end{table}
-\subsection{\Acl{arm}}
 \label{sub:association_rule_mining}
 \Ac{fim} is the first phase of \ac{arm}.
 In the following phase, the output of \ac{fim} can be further processed to find the association rules with \acl{arm}.
@@ -97,7 +95,7 @@ The confidence of a rule $X \Rightarrow Y$ is the fraction of transactions conta
 \end{definition}
 In other words, the confidence of a rule $X \Rightarrow Y$ is the conditional probability that a transaction contains the itemset $Y$, given that it contains the itemset $X$.
 
-For example in \autoref{tab:market-basket-dataset}, the support of \{Brocoli, Tomato\} is $2/5=0.4$, and the support of \{Broccoli, Tomato, Carrot\} is $1/5=0.2$.
+For example in \autoref{tab:binary-prepresentation}, the support of \{Brocoli, Tomato\} is $2/5=0.4$, and the support of \{Broccoli, Tomato, Carrot\} is $1/5=0.2$.
 Hence, the confidence of the rule $\text{\{Brocoli, Tomato\}} \Rightarrow \text{\{Carrot\}}$ is $0.2 / 0.4 = 0.5$.
 
 Now since we have the confidence, the definition of an association rule can be presented as follows:
@@ -197,6 +195,7 @@ There are several optimization techniques that we will discover in the following
 % We will discuss some properties that can be used to optimize the frequent itemset mining phase in \autoref{sub:apriori }.
 \subsection{The \acl{apriori}}
 \label{sub:apriori}
+
 As we just saw, the search space of itemsets is huge.
 Hence, it is not reasonable to enumerate all possible itemsets, since a lot of candidates are inefficiently generated by the algorithm for each iteration.
 Instead, we need some better strategy for traversing it.
@@ -247,37 +246,38 @@ We will later study one of such algorithm: the \acl{fpg} in \autoref{sub:fp-grow
 
 
 \subsection{Eclat}
+\label{sub:eclat}
 \begin{table}[]
     \centering
-    \begin{tabular}{|l|l|}
-    \hline
-    TID  & Itemset        \\ \hline
-    T001 & I1, I2, I5     \\ \hline
-    T002 & I2, I4         \\ \hline
-    T003 & I2, I3         \\ \hline
-    T004 & I1, I2, I4     \\ \hline
-    T005 & I1, I3         \\ \hline
-    T006 & I2, I3         \\ \hline
-    T007 & I1, I3         \\ \hline
-    T008 & I1, I2, I3, I5 \\ \hline
-    T009 & I1, I2, I3     \\ \hline
+    \begin{tabular}{|l|l|c|}
+        \hline
+        \textbf{tid} & \textbf{Transaction}   & \textbf{Binary presentation} \\ \hline
+        T001         & \{ I1, I2, I5 \}       & \texttt{11001}               \\ \hline
+        T002         & \{ I2, I4 \}           & \texttt{01010}               \\ \hline
+        T003         & \{ I2, I3 \}           & \texttt{01100}               \\ \hline
+        T004         & \{ I1, I2, I4 \}       & \texttt{11010}               \\ \hline
+        T005         & \{ I1, I3 \}           & \texttt{10100}               \\ \hline
+        T006         & \{ I2, I3 \}           & \texttt{01100}               \\ \hline
+        T007         & \{ I1, I3 \}           & \texttt{10100}               \\ \hline
+        T008         & \{ I1, I2, I3, I5 \}   & \texttt{11101}               \\ \hline
+        T009         & \{ I1, I2, I3 \}       & \texttt{11100}               \\ \hline
     \end{tabular}
-    \caption{Transactional database in horizontal format \citep{han2012mining}}
+    \caption{The transactional database in horizontal format \citep{han2012mining}}
     \label{tab:horizontal-transactional-database}
 \end{table}
 
 \begin{table}[]
     \centering
-    \begin{tabular}{|l|l|}
-    \hline
-    Itemset & TID list                                 \\ \hline
-    I1      & T100, T400, T500, T700, T800, T900       \\ \hline
-    I2      & T100, T200, T300, T400, T600, T800, T900 \\ \hline
-    I3      & T300, T500, T600, T700, T800, T900       \\ \hline
-    I4      & T200, T400                               \\ \hline
-    I5      & T100, T800                               \\ \hline
-    \end{tabular}
-    \caption{Transactional database in vertical format \citep{han2012mining}}
+    \begin{tabular}{|l|l|c|}
+        \hline
+        \textbf{Itemset} & \textbf{TID list}                        & \textbf{Binary presentation} \\ \hline
+        I1               & T100, T400, T500, T700, T800, T900       & \texttt{100110111}           \\ \hline
+        I2               & T100, T200, T300, T400, T600, T800, T900 & \texttt{111101011}           \\ \hline
+        I3               & T300, T500, T600, T700, T800, T900       & \texttt{001011111}           \\ \hline
+        I4               & T200, T400                               & \texttt{010100000}           \\ \hline
+        I5               & T100, T800                               & \texttt{100000010}           \\ \hline
+        \end{tabular}
+    \caption{The transactional database in vertical format \citep{han2012mining}}
     \label{tab:vertical-transactional-database}
 \end{table}
 
@@ -286,6 +286,7 @@ The \ac{eclat} algorithm is an algorithm that does not require re-scanning the d
 
 In \acl{apriori}, the data is in the horizontal format like in \autoref{tab:horizontal-transactional-database}, while \ac{eclat} works on vertical data format.
 In the vertical transactional database, each itemset is now a key to a set of the transactions where it appears, like in \autoref{tab:vertical-transactional-database}.
+In binary presentation, by transposing the horizontal data format,we will get the vertical data format.
 The set of transactions is often called \ac{TID} set.
 The importance of utilizing vertical data format is that we can find the support of an itemset by intersecting the \ac{TID} set of the children itemsets.
 

@@ -1,51 +1,57 @@
 \section{Redescription mining}
 \subsection{Definition}
+
+\begin{table}[tb]
+    \centering
+    \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|llll|l|lll|}
+            \cline{1-4} \cline{6-8}
+            \multicolumn{4}{|c|}{\textbf{Foods}}                                                                                                                               &  & \multicolumn{3}{c|}{\textbf{Drinks}}                                                                             \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{Transaction ID} & \multicolumn{1}{l|}{Bread (I1)}                & \multicolumn{1}{l|}{Butter (I2)}               & Jam (I5)                  &  & \multicolumn{1}{l|}{Transaction ID} & \multicolumn{1}{l|}{Milk (I3)}                 & Coke (I4)                 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T001}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{9AFF99}1 &  & \multicolumn{1}{l|}{T001}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T002}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T002}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \cellcolor[HTML]{9AFF99}1 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T003}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T003}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T004}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T004}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \cellcolor[HTML]{9AFF99}1 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T005}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T005}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T006}           & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T006}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T007}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{FFCCC9}0} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T007}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T008}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{9AFF99}1 &  & \multicolumn{1}{l|}{T008}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+            \multicolumn{1}{|l|}{T009}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T009}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
+        \end{tabular}%
+    }
+    \caption{Market basket data, represented as a pair of data tables with mapped rows, derived from Table \ref{tab:horizontal-transactional-database}. Each column has been assigned with a name of some foods and drinks.}
+    \label{tab:market-basket-redescription}
+\end{table}
+
 Redescription mining is a process of discovering a set of criteria that describe a subset of data in multiple, complementary ways.
 In other words, it is a method of coming up with various ways to describe the same data or set of data.
 It can be used to find novel links or patterns in huge collections of data in a variety of domains.
 
-\begin{figure}[bt]
-    \centering
-    \includegraphics[width=10cm]{niche-finding}
-    \caption{An example redescription plotted on a map, showing the areas inhabited by lynxes (light red and medium purple) and the areas where the maximum March temperature is between \SI{-24.4}{\degreeCelsius{}} and \SI{3.4}{\degreeCelsius{}} (dark blue and medium purple) \cite{galbrun2018redescription}}
-    \label{fig:niche}
-\end{figure}
-A classic example of redescription mining application is in finding bio-climatic niches, or, in other words, relate the habitat of particular species or groups of species, to the local climatic conditions.
-In this example, we want to describe geographic regions in terms of the fauna that inhabits them, on one hand, and in terms of the values of some climatic variables, on the other hand. In particular, the aim of redescription mining is to extract such pairs of descriptions automatically from a given dataset.
-As a specific example, the method might return a redescription that states that areas where the maximum temperature in March is between \SI{-24.4}{\degreeCelsius{}} and \SI{4.3}{\degreeCelsius{}} are roughly the same as area inhabited by lynxes (see Figure~\ref{fig:niche}).
-In this application, the aim is to help ecologists understand the impact of climate on the distribution of species.
+% A classic example of redescription mining application is in finding bio-climatic niches, or, in other words, relate the habitat of particular species or groups of species, to the local climatic conditions.
+% In this example, we want to describe geographic regions in terms of the fauna that inhabits them, on one hand, and in terms of the values of some climatic variables, on the other hand. In particular, the aim of redescription mining is to extract such pairs of descriptions automatically from a given dataset.
+% As a specific example, the method might return a redescription that states that areas where the maximum temperature in March is between \SI{-24.4}{\degreeCelsius{}} and \SI{4.3}{\degreeCelsius{}} are roughly the same as area inhabited by lynxes (see Figure~\ref{fig:niche}).
+% In this application, the aim is to help ecologists understand the impact of climate on the distribution of species.
 
-\begin{table}[tb]
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
-    \cline{1-6} \cline{8-12}
-    \multicolumn{6}{|c|}{Species occurrences} &  & \multicolumn{5}{c|}{Climate}                                  \\ \cline{1-6} \cline{8-12} 
-    Location ID   & mountain hare & \dots & Canada lynx   & Eurasian lynx  & \dots  &  & Location ID & \dots & max.\ March T.\ & avg.\ May P.\ & \dots \\ \cline{1-6} \cline{8-12} 
-    \dots  & \dots & \dots & \dots   & \dots  & \dots &  & \dots  & \dots & \dots & \dots & \dots \\ \cline{1-6} \cline{8-12} 
-    4652 & True  & \dots & True  & False & \dots &  & 4652 & \dots & 2   & 10  & \dots \\ \cline{1-6} \cline{8-12} 
-    4653 & True  & \dots & False & True & \dots &  & 4653 & \dots & 3   & 40  & \dots \\ \cline{1-6} \cline{8-12} 
-    \dots. & \dots & \dots & \dots   & \dots  & \dots &  & \dots. & \dots & \dots & \dots & \dots \\ \cline{1-6} \cline{8-12} 
-    \end{tabular}%
-    }
-    \caption{An example dataset, represented as a pair of data tables with mapped rows. The left-hand side table records occurrences of various species, while the right-hand side table records the values of various bio-climatic variables such as temperature (T, in \si{\degreeCelsius{}}) and precipitation (P, in \si{\milli\meter}).}
-    \label{tab:mammals-and-climate}
-\end{table}
-
+% Inspired by the vegetable theme of the example in \ref{sec:fim}, we continued with the foods and drinks topic.
+For instance, let us consider the same market basket data example from subsection \ref{sub:eclat}.
+Assume each column represents occurrences of some item in all the transactions.
+We assign each column to an item in the market: \{I1: Bread, I2: Butter, I3: Milk, I4: Coke, I5: Jam\}.
+We also divide the dataset by foods vs drinks, the result is a pair of data tables in Table \ref{tab:market-basket-redescription}.
+With this example, we want to understand the connections between the purchasing behaviors of foods and drinks.
 
 Here we follow the formalism of \cite{Galbrun-Methods}.
 The redescription mining data model $\mathcal{D}$ is a tuple of 3 sets: $\left( entity\;\mathcal{E}, attributes\;\mathcal{A}, views\;\mathcal{V} \right)$.
 Each entity $e \in \mathcal{E}$ is associated with a set of attributes $a \in \mathcal{A}$.
 The attributes are partitioned into disjoint \emph{views} $v \in \mathcal{V}$ that correspond to logical groups of attributes. Each view can be thought of as a data table, where the columns represent the attributes, and the rows represent the entities, which map across the different tables.
 Usually, the data contains 2 datasets, one left-hand side and one right-hand side data.
-In the bioclimatic-niche finding example above, the entities are geographic locations and the views correspond to species occurrences and climate, respectively.
-That is, one view contains attributes that each record the presence or absence of a specific species in each location, whereas the other view contains attributes that each record the value taken by a specific climatic variable in each location.
-This can be represented as a pair of tables, as shown in Table~\ref{tab:mammals-and-climate}.
+In the market basket example above, the entities are transactions and the views correspond to types of items in the transaction, e.g. food, or drink.
+This can be represented as a pair of tables, as shown in Table~\ref{tab:market-basket-redescription}.
 
 Then, a description, or query, is a logical formula over attributes.
 The query can be evaluated for each entity, and returns a Boolean value that indicates whether the entity satisfies the query conditions.
 The support of a query is the set of entities that satisfy the query.
 A redescription is then a pair of queries, respectively over attributes from distinct views, having sufficiently similar supports \cite{galbrun2018redescription}.
-In the bioclimatic-niche finding example above, a redescription consists of a query over species occurrences and a query over climatic variables, respectively, that are satisfied in roughly the same locations.
+In the market basket example in Table \ref{tab:market-basket-redescription}, a redescription consists of a query over items' occurrences on both sides of food and drink, that are in the same transactions.
 
 For a redescription to satisfy the conditions, it must have similar supports between the two queries.
 The similarity of the two queries $p$ and $q$ is denoted as $\sim$.
