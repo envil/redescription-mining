@@ -19,7 +19,7 @@
             \multicolumn{1}{|l|}{T009}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 &  & \multicolumn{1}{l|}{T009}           & \multicolumn{1}{l|}{\cellcolor[HTML]{9AFF99}1} & \cellcolor[HTML]{FFCCC9}0 \\ \cline{1-4} \cline{6-8} 
         \end{tabular}%
     }
-    \caption{Market basket data, represented as a pair of data tables with mapped rows, derived from Table \ref{tab:horizontal-transactional-database}. Each column has been assigned with a name of some foods and drinks.}
+    \caption{Market basket data, represented as a pair of data tables with mapped rows, derived from \autoref{tab:horizontal-transactional-database}. Each column has been assigned with a name of some foods and drinks.}
     \label{tab:market-basket-redescription}
 \end{table}
 
@@ -29,14 +29,14 @@ It can be used to find novel links or patterns in huge collections of data in a 
 
 % A classic example of redescription mining application is in finding bio-climatic niches, or, in other words, relate the habitat of particular species or groups of species, to the local climatic conditions.
 % In this example, we want to describe geographic regions in terms of the fauna that inhabits them, on one hand, and in terms of the values of some climatic variables, on the other hand. In particular, the aim of redescription mining is to extract such pairs of descriptions automatically from a given dataset.
-% As a specific example, the method might return a redescription that states that areas where the maximum temperature in March is between \SI{-24.4}{\degreeCelsius{}} and \SI{4.3}{\degreeCelsius{}} are roughly the same as area inhabited by lynxes (see Figure~\ref{fig:niche}).
+% As a specific example, the method might return a redescription that states that areas where the maximum temperature in March is between \SI{-24.4}{\degreeCelsius{}} and \SI{4.3}{\degreeCelsius{}} are roughly the same as area inhabited by lynxes (see Figure~\autoref{fig:niche}).
 % In this application, the aim is to help ecologists understand the impact of climate on the distribution of species.
 
-% Inspired by the vegetable theme of the example in \ref{sec:fim}, we continued with the foods and drinks topic.
-For instance, let us consider the same market basket data example from subsection \ref{sub:eclat}.
+% Inspired by the vegetable theme of the example in \autoref{sec:fim}, we continued with the foods and drinks topic.
+For instance, let us consider the same market basket data example from \autoref{sub:eclat}.
 Assume each column represents occurrences of some item in all the transactions.
 We assign each column to an item in the market: \{I1: Bread, I2: Butter, I3: Milk, I4: Coke, I5: Jam\}.
-We also divide the dataset by foods vs drinks, the result is a pair of data tables in Table \ref{tab:market-basket-redescription}.
+We also divide the dataset by foods vs drinks, the result is a pair of data tables in \autoref{tab:market-basket-redescription}.
 With this example, we want to understand the connections between the purchasing behaviors of foods and drinks.
 
 Here we follow the formalism of \cite{Galbrun-Methods}.
@@ -45,13 +45,13 @@ Each entity $e \in \mathcal{E}$ is associated with a set of attributes $a \in \m
 The attributes are partitioned into disjoint \emph{views} $v \in \mathcal{V}$ that correspond to logical groups of attributes. Each view can be thought of as a data table, where the columns represent the attributes, and the rows represent the entities, which map across the different tables.
 Usually, the data contains 2 datasets, one left-hand side and one right-hand side data.
 In the market basket example above, the entities are transactions and the views correspond to types of items in the transaction, e.g. food, or drink.
-This can be represented as a pair of tables, as shown in Table~\ref{tab:market-basket-redescription}.
+This can be represented as a pair of tables, as shown in \autoref{tab:market-basket-redescription}.
 
 Then, a description, or query, is a logical formula over attributes.
 The query can be evaluated for each entity, and returns a Boolean value that indicates whether the entity satisfies the query conditions.
 The support of a query is the set of entities that satisfy the query.
 A redescription is then a pair of queries, respectively over attributes from distinct views, having sufficiently similar supports \cite{galbrun2018redescription}.
-In the market basket example in Table \ref{tab:market-basket-redescription}, a redescription consists of a query over items' occurrences on both sides of food and drink, that are in the same transactions.
+In the market basket example in \autoref{tab:market-basket-redescription}, a redescription consists of a query over items' occurrences on both sides of food and drink, that are in the same transactions.
 
 For a redescription to satisfy the conditions, it must have similar supports between the two queries.
 The similarity of the two queries $p$ and $q$ is denoted as $\sim$.
@@ -62,22 +62,29 @@ The Jaccard distance is based on the \acl{JSI}.
     The Jaccard (similarity) index J between the supports of two descriptions p and q is defined as below:
 
     \begin{equation}
-        J(p, q) = J(supp(p), supp(q)) = \cfrac{\left|supp(p)\cap supp(q)\right|}{\left|supp(p)\cup supp(q)\right|}
+        J(p, q) = J(\support{p}, \support{q}) = \cfrac{\left|\support{p}\cap \support{q}\right|}{\lvert\support{p}\cup \support{q}\rvert}
     \end{equation}
 \end{definition}
 
-The requirement to calculate $J$ is obviously that none of $supp(q)$ and $supp(p)$ equals $\emptyset$.
+The requirement to calculate $J$ is obviously that none of $\support{q}$ and $\support{p}$ equals $\emptyset$.
 
-\begin{definition}[Jaccard distance \citep{galbrun2018redescription}]
-    The Jaccard distance is then defined as:
+% \begin{definition}[Jaccard distance \citep{galbrun2018redescription}]
+%     The Jaccard distance is then defined as:
 
-    \begin{equation}
-        1 - J(p, q) = 1 - \cfrac{\left|supp(p)\cap supp(q)\right|}{\left|supp(p)\cup supp(q)\right|}
-    \end{equation}
-\end{definition}
+%     \begin{equation}
+%         1 - J(p, q) = 1 - \cfrac{\left|\support{p}\cap \support{q}\right|}{\left|\support{p}\cup \support{q}\right|}
+%     \end{equation}
+% \end{definition}
 
-Clearly, the smaller the distance is, the more accurate the redescription is.
-When the distance between the two queries equals to $0$, the redescription is called \textit{exact}, and is denoted as $p \equiv q$.
+Clearly, the bigger the \acl{JSI} is, the more accurate the redescription is.
+When the similarity between the two queries equals to $1$, the redescription is called \textit{exact}, and is denoted as $p \equiv q$.
+Intuitively, Jaccard similarity index is the fraction between the overlap of two supports of two queries versus the union of them.
+Jaccard index is closely correlated to the confidence in \acl{arm}.
+Suppose all the attributes are Boolean and the queries are monotone conjunctive.
+A redescription $\left(p,q\right)$ can be considered as $p \Rightarrow q$ and $q \Rightarrow p$.
+Given that $\confident{p}{q}=\supportcount{p \cup q}/\supportcount{p}=\lvert \support{p} \cap \support{q}\rvert/\support{p}$;
+and similarly $\confident{q}{p}=\supportcount{q \cup p}/\supportcount{q}=\lvert \support{q} \cap \support{p}\rvert/\support{q}$.
+Since $\supportcount{p}\leq \lvert\support{p}\cup \support{q}\rvert$, it can be inferred that the Jaccard similar index is never bigger than any of the two confidences.
 
 From here, we can formulate the formal definition of the redescription.
 
@@ -99,7 +106,7 @@ The idea is quite simple, first we mine for all possible queries, then we will t
 If the overlap between the two queries is bigger than a certain threshold, we then have found a redescription.
 
 The \ac{MID} algorithm is an algorithm that follow the \ac{MAP} strategy.
-We can have a look at the pseudocode of the \acl{MID} in Algorithm \ref{alg:MID}.
+We can have a look at the pseudocode of the \acl{MID} in \autoref{alg:MID}.
 The mining for queries steps is in line 2, where the paring part is at line 12.
 
 Recall that in statistic, p-value is the probabilities of the null hypothesis to be true.

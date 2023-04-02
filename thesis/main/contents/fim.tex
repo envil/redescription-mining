@@ -9,13 +9,14 @@ Nowadays, the applications of \acl{fim} expanded to many more domains, with diff
     \centering
     \begin{tabular}{|l|c|c|}
         \hline
-        \textbf{\ac{tid}} & \textbf{Transaction}         & \textbf{Binary representation} \\ \hline
-        1            & \{Broccoli\}                 & \texttt{100}                   \\ \hline
-        2            & \{Carrot\}                   & \texttt{010}                   \\ \hline
-        3            & \{Tomato\}                   & \texttt{001}                   \\ \hline
-        4            & \{Broccoli, Tomato\}         & \texttt{101}                   \\ \hline
-        5            & \{Broccoli, Tomato, Carrot\} & \texttt{111}                   \\ \hline
-    \end{tabular}
+        \textbf{tid} & \textbf{Transaction} & \textbf{Binary representation} \\ \hline
+        T101         & \{I1\}               & \texttt{1000}                  \\ \hline
+        T102         & \{I2\}               & \texttt{0100}                  \\ \hline
+        T103         & \{I3\}               & \texttt{0010}                  \\ \hline
+        T104         & \{I4\}               & \texttt{0001}                  \\ \hline
+        T105         & \{I1, I3\}           & \texttt{1010}                  \\ \hline
+        T106         & \{I1, I2, I3, I4\}   & \texttt{1111}                  \\ \hline
+    \end{tabular}%
     \caption{An example of market basket dataset in binary representation}
     \label{tab:binary-prepresentation}
 \end{table}
@@ -29,22 +30,23 @@ Such a collection of transactions can be represented in binary representation, w
 One item in $\universeOfItemset$ will have it own same position in all records.
 We can see that the length of each record is basically $|\universeOfItemset|$.
 If an item appears in a transaction, it will have value $1$ in the corresponding record, otherwise $0$.
-We can see this in the example \autoref{tab:binary-prepresentation}, for the first row, only Broccoli was present in the transaction, hence in the binary representation of the transaction, the first position, which corresponding to Broccoli, is set to $1$.
+We can see this in the example \autoref{tab:binary-prepresentation}, for the first row, only I1 was present in the transaction, hence in the binary representation of the transaction, the first position, which corresponding to I1, is set to $1$.
 This representation is analogous to a matrix where the rows are the records and represents the transactions, and the columns correspond to the items.
 The presence of the $\mathit{j}$th item in the $\mathit{i}$th transaction is recorded as the value in cell $\mathit{(i, j)}^{th}$.
 
 A set of items in $\universeOfItemset$ is an \textit{itemset}.
 We refer to a set of $k$ items as \kItemset.
-The \textit{support} of an itemset is the frequency where it appears in as a subset of a transaction in the dataset.
+The \textit{support} of an itemset is the set of transactions those contain the itemset.
+We might also encounter an alternative way of defining \textit{support} in other literatures where it is defined as the frequency where an itemset appears in as a subset of a transaction in the dataset.
+Let us agree that the notation \textit{support} in the scope of this thesis is referring to the first definition above, where the support is a set.
 
-\begin{definition}[Support \citep{Aggarwal15}]
-    The support of an itemset $\itemset$ is defined as the fraction of the transactions in the database $\transaction{} = \transactionDef{}$ that contain $\itemset$ as a subset.
-\end{definition}
-\begin{sloppypar}
+\begin{definition}[Support]
+    The support of an itemset $\itemset$ is defined as the set of transactions in the database $\transaction{} = \transactionDef{}$ that contains $\itemset$ as a subset.
     The support of itemset $\itemset$ is denoted by $\support{I}$.
-    For example in \autoref{tab:binary-prepresentation}, $\support{\{Broccoli, Tomato\}} = 0.4$.
-\end{sloppypar}
-The aim of \acl{fim} is to find the itemsets with supports above a predefined \ac{minsup}.
+\end{definition}
+For example in \autoref{tab:binary-prepresentation}, $\support{\{I1, I3\}} = \{T105, T106\}$.
+% The accuracy is $\lvert\support{\{I1, I3\}}\rvert=2/6=0.(3)$.
+The aim of \acl{fim} is to find the itemsets with support's sizes above a predefined \ac{minsup}.
 
 \begin{definition}[\Acl{fim} \citep{Aggarwal15}]
     Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined fraction $\minsup$ of the transactions in $\transaction{}$.
@@ -56,7 +58,7 @@ A closed frequent itemset is both closed and frequent.
 \begin{definition}[Closed frequent itemset ]
     Given $X$ and $Y$ are frequent itemsets at minimum support minsup, $X$ is a closed frequent itemset if:
     \begin{equation}
-        \forall Y \supset X, supp(Y) < supp(X)
+        \forall Y \supset X, \supportcount{Y} < \supportcount{X}
     \end{equation}
 \end{definition}
 
@@ -87,16 +89,17 @@ In order to determine whether a rule is trustworthy or not, we need to introduce
 The confidence of a rule $X \Rightarrow Y$ is the fraction of transactions containing $X$, which also contain $Y$.
 \begin{definition}[Confidence \citep{Aggarwal15}]
     Let $X$ and $Y$ be two set of items.
-    The confidence $conf(X \cup Y)$ of the rule $X \cup Y$ is the conditional probability of $X \cup Y$ occurring in a transaction, given that the transaction contains $X$.
-    Therefore, the confidence $conf(X \cup Y)$ is defined as follows:
+    The confidence $\mathit{conf}(X \cup Y)$ of the rule $X \cup Y$ is the conditional probability of $X \cup Y$ occurring in a transaction, given that the transaction contains $X$.
+    Therefore, the confidence $\mathit{conf}(X \cup Y)$ is defined as follows:
     \begin{equation}
-        conf(X \Rightarrow Y) = \frac{supp(X \cup Y)}{supp(X)}
+        \confident{X}{Y} = \frac{\supportcount{X \cup Y}}{\supportcount{X}}
     \end{equation}
 \end{definition}
 In other words, the confidence of a rule $X \Rightarrow Y$ is the conditional probability that a transaction contains the itemset $Y$, given that it contains the itemset $X$.
 
-For example in \autoref{tab:binary-prepresentation}, the support of \{Brocoli, Tomato\} is $2/5=0.4$, and the support of \{Broccoli, Tomato, Carrot\} is $1/5=0.2$.
-Hence, the confidence of the rule $\text{\{Brocoli, Tomato\}} \Rightarrow \text{\{Carrot\}}$ is $0.2 / 0.4 = 0.5$.
+For example in \autoref{tab:binary-prepresentation}, the support of \{I1, I3\} is $\support{\{I1, I3\}} = \{T105, T106\}$.
+And the support of \{I1, I2, I3, I4\} is $\support{\{I1, I2, I3, I4\}} = \{T106\}$.
+Hence, the confidence of the rule $\text{\{I1, I3\}} \Rightarrow \text{\{I2, I4\}}$ is $1 / 2 = 0.5$.
 
 Now since we have the confidence, the definition of an association rule can be presented as follows:
 \begin{definition}[Association rules \citep{Aggarwal15}]
@@ -118,26 +121,46 @@ The frequent itemset mining phase usually takes up most of the computation time 
 Therefore, most of the research work is focused on it.
 \subsection{The search space}
 \label{sub:search_space}
+% Let us use the \acl{ne} to go through it and see what will happen.
+% Even though the \acl{ne} does not have any practical application, using it helps us to understand the computational complexity of \ac{fim} problem and appreciate the benefit of some optimization techniques. %, e.g. pruning or efficient support counting.
+
+% The \acl{ne} is, unsurprisingly, very simple. It tries to check all the possible combinations to see if one is a frequent itemset or not.
+% For example, with the universe of 4 items, all the possible combinations of items are represented in \autoref{fig:item-lattice}.
+% In order to check the frequency of an itemset, we need to count the number of transactions that contain the itemset, this step is called \textit{support counting}.
+The search space of \acl{fim} problem is enormous.
+Considering a universe of items $\universeOfItemset$, there will be a total of $2^{\left\lvert \universeOfItemset \right\rvert} - 1$ possible combinations, or itemsets, excluding the empty set.
+In other words, the size of the possible itemsets grows exponentially with the size of the universe.
+To put this into perspective, a universe of 100 items will have a total of $2^{100} - 1$ possible itemsets, which is bigger than $10^{30}$.
+At the time of writing this, the most powerful supercomputer is the Fugaku with the speed of approximately 0.4 exaflop/s \citep{monroe_fugaku_2020}.
+Suppose we use this supercomputer to enumerate through the search space of all $10^{30}$ possible itemsets, and each iteration will cost us 1 flop, even though most likely it will cost more than that; this whole process will then take at least $2.5^{12}$ seconds, or at least 79 thousands years.
+And all that was just for enumerating the search space, we are supposed to do the support counting at each stop and that will take much more time than the enumeration.
+Realistically, the size of $\universeOfItemset$ is often much bigger than 100.
+To say the least, this \acl{ne} is not practical, even for datasets over small collections of items.
+There are several optimization techniques that we will discover in the following subsection.
+
+% We will discuss some properties that can be used to optimize the frequent itemset mining phase in \autoref{sub:apriori }.
+\subsection{The \acl{apriori}}
+\label{sub:apriori}
 \begin{figure}
     \centering
     \begin{tikzpicture}[y=-1cm]
         \begin{scope}[every node/.style={circle,thick,draw}]
             \node (E) at (5,0) {$\emptyset$};
-            \node (A) at (1,2) {A};
-            \node (B) at (3.5,2) {B};
-            \node (C) at (6.5,2) {C};
-            \node (D) at (9,2) {D};
-            \node (AB) at (0,4) {AB};
-            \node (AC) at (2,4) {AC};
-            \node (AD) at (4,4) {AD};
-            \node (BC) at (6,4) {BC};
-            \node (BD) at (8,4) {BD};
-            \node (CD) at (10,4) {CD};
-            \node (ABC) at (1,6) {ABC};
-            \node (ABD) at (3.5,6) {ABD};
-            \node (ACD) at (6.5,6) {ACD};
-            \node (BCD) at (9,6) {BCD};
-            \node (ABCD) at (5,8.5) {ABCD};
+            \node (A) at (1,2) {I1};
+            \node (B) at (3.5,2) {I2};
+            \node (C) at (6.5,2) {I3};
+            \node (D) at (9,2) {I4};
+            \node (AB) at (0,4) {I1,I2};
+            \node (AC) at (2,4) {I1,I3};
+            \node (AD) at (4,4) {I1,I4};
+            \node (BC) at (6,4) {I2,I3};
+            \node (BD) at (8,4) {I2,I4};
+            \node (CD) at (10,4) {I3,I4};
+            \node (ABC) at (1,6) {I1,I2,I3};
+            \node (ABD) at (3.5,6) {I1,I2,I4};
+            \node (ACD) at (6.5,6) {I1,I3,I4};
+            \node (BCD) at (9,6) {I2,I3,I4};
+            \node (ABCD) at (5,8.5) {I1,I2,I3,I4};
         \end{scope}
         \draw (E) -- (A);
         \draw (E) -- (B);
@@ -175,26 +198,6 @@ Therefore, most of the research work is focused on it.
     \caption{The item lattice for a universe of 4 items.}
     \label{fig:item-lattice}
 \end{figure}
-% Let us use the \acl{ne} to go through it and see what will happen.
-% Even though the \acl{ne} does not have any practical application, using it helps us to understand the computational complexity of \ac{fim} problem and appreciate the benefit of some optimization techniques. %, e.g. pruning or efficient support counting.
-
-% The \acl{ne} is, unsurprisingly, very simple. It tries to check all the possible combinations to see if one is a frequent itemset or not.
-% For example, with the universe of 4 items, all the possible combinations of items are represented in \autoref{fig:item-lattice}.
-% In order to check the frequency of an itemset, we need to count the number of transactions that contain the itemset, this step is called \textit{support counting}.
-The search space of \acl{fim} problem is enormous.
-Considering a universe of items $\universeOfItemset$, there will be a total of $2^{\left\lvert \universeOfItemset \right\rvert} - 1$ possible combinations, or itemsets, excluding the empty set.
-In other words, the size of the possible itemsets grows exponentially with the size of the universe.
-To put this into perspective, a universe of 100 items will have a total of $2^{100} - 1$ possible itemsets, which is bigger than $10^{30}$.
-At the time of writing this, the most powerful supercomputer is the Fugaku with the speed of approximately 0.4 exaflop/s \citep{monroe_fugaku_2020}.
-Suppose we use this supercomputer to enumerate through the search space of all $10^{30}$ possible itemsets, and each iteration will cost us 1 flop, even though most likely it will cost more than that; this whole process will then take at least $2.5^{12}$ seconds, or at least 79 thousands years.
-And all that was just for enumerating the search space, we are supposed to do the support counting at each stop and that will take much more time than the enumeration.
-Realistically, the size of $\universeOfItemset$ is often much bigger than 100.
-To say the least, this \acl{ne} is not practical, even for datasets over small collections of items.
-There are several optimization techniques that we will discover in the following subsection.
-
-% We will discuss some properties that can be used to optimize the frequent itemset mining phase in \autoref{sub:apriori }.
-\subsection{The \acl{apriori}}
-\label{sub:apriori}
 
 As we just saw, the search space of itemsets is huge.
 Hence, it is not reasonable to enumerate all possible itemsets, since a lot of candidates are inefficiently generated by the algorithm for each iteration.
@@ -205,17 +208,17 @@ We know that if an itemset $I$ exists in a transaction, then all of its subsets 
 Hence, the number of transactions that one subset $J_i$ can be found in is always larger or equal to the corresponding value of the itemset $I$.
 This is called the \acl{smp}:
 \begin{definition}[\Acl{smp} \citep{Aggarwal15}]
-    The support of every subset $J$ of $I$ is at least equal to that of the support of itemset $I$.
+    The support count of every subset $J$ of $I$ is at least equal to that of the support count of itemset $I$.
     \begin{equation}
-        supp(J) \geq supp(I) \quad \forall J \subseteq I
+        \supportcount{J} \geq \supportcount{I} \quad \forall J \subseteq I
     \end{equation}
 \end{definition}
 
 The direct implication from the \acl{smp} is that every subset $J_i$ of a frequent itemset $I$ is also frequent.
 This is also called the \acl{dcp} \citep{Aggarwal15}.
 We can apply this property in the opposite direction, that is, if a subset $J$ is not frequent, then noen of its supersets $I_1, I_2, \dots, I_k$ can be frequent.
-For example in the \autoref{fig:item-lattice}, if during the searching, we found out that $J = \{A, B\}$ is not frequent, then all the supersets of $J$, e.g. $\{A, B, C\}, \{A, B , D\}, \{A, B , C, D\}$, cannot be frequent.
-We can then drop all supersets of ${J = \{A, B\}}$ from the search space.
+For example in the \autoref{fig:item-lattice}, if during the searching, we found out that $J = \{I1, I2\}$ is not frequent, then all the supersets of $J$, e.g. $\{I1, I2, I3\}, \{I1, I2 , I4\}, \{I1, I2 , I3, I4\}$, cannot be frequent.
+We can then drop all supersets of ${J = \{I1, I2\}}$ from the search space.
 This is a huge advantage since it allows us to stop searching early for all the supersets if we know that one of the subsets is not frequent.
 What we have here is essentially the core of the \acl{apriori}, where the \acl{dcp} is applied to a \ac{ne}.
 By utilizing the simple \acl{dcp} property above, the amount of candidates we have to process is drastically reduced.
@@ -305,7 +308,7 @@ The next important concept of the \ac{eclat} algorithm is the \ac{ec}. The defin
 % \textbf{TODO!!!} the connection between the equivalence class and the TID sets are not quite clear in this paragraph
 
 In the \ac{eclat} algorithm, itemsets are in the same class if they have the same $k$ length prefix \citep{zaki2000}, we denote this equivalence relation $\theta_k$.
-By collapsing all the itemsets with the same prefix in the lattice \autoref{fig:item-lattice} together using $\theta_1$, we will have a set of \ac{ec}es: $\{[A], [B], [C], [D]\}$.
+By collapsing all the itemsets with the same prefix in the lattice \autoref{fig:item-lattice} together using $\theta_1$, we will have a set of \ac{ec}es: $\{[I1], [I2], [I3], [I4]\}$.
 The \ac{ec}es are disjoint, means they do not share any common items and are independent of each other. % not sharing any itemset
 This property of the \ac{ec} allows the \ac{eclat} to be able to solve each class independently without worrying about other classes.
 Normally $\theta_1$ is sufficient when the data is small, but when the TID sets are too big to fit into the memory, by applying the independence property of the \ac{ec}, we can solve that class independently.
