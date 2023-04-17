@@ -2,20 +2,21 @@
 \label{sec:fim}
 \Acl{fim} was originally developed for marketing purposes introduced in \autoref{sub:the_problems}.
 The initial goal was to analyze the market basket data to extract information about which items are frequently bought together.
-Nowadays, the applications of \acl{fim} expanded to many more domains, with different variety of tasks.
+Nowadays, the applications of \acl{fim} expanded to many more domains, with different kind of tasks.
 
 \subsection{Definitions}
+\label{sub:association_rule_mining}
 \begin{table}[tb]
     \centering
     \begin{tabular}{|l|c|c|}
         \hline
-        \textbf{tid} & \textbf{Transaction} & \textbf{Binary representation} \\ \hline
-        T101         & \{I1\}               & \texttt{1000}                  \\ \hline
-        T102         & \{I2\}               & \texttt{0100}                  \\ \hline
-        T103         & \{I3\}               & \texttt{0010}                  \\ \hline
-        T104         & \{I4\}               & \texttt{0001}                  \\ \hline
-        T105         & \{I1, I3\}           & \texttt{1010}                  \\ \hline
-        T106         & \{I1, I2, I3, I4\}   & \texttt{1111}                  \\ \hline
+        \textbf{tid} & \textbf{Transaction}                           & \textbf{Binary representation} \\ \hline
+        T101         & \{I1: Bread\}                                  & \texttt{1000}                  \\ \hline
+        T102         & \{I2: Butter\}                                 & \texttt{0100}                  \\ \hline
+        T103         & \{I3: Jam\}                                    & \texttt{0010}                  \\ \hline
+        T104         & \{I4: Milk\}                                   & \texttt{0001}                  \\ \hline
+        T105         & \{I1: Bread, I3: Jam\}                         & \texttt{1010}                  \\ \hline
+        T106         & \{I1: Bread, I2: Butter, I3: Milk, I4: Jam\}   & \texttt{1111}                  \\ \hline
     \end{tabular}%
     \caption{An example of market basket dataset in binary representation}
     \label{tab:binary-prepresentation}
@@ -24,7 +25,7 @@ Formally, assume that we have a universe of all possible items $\universeOfItems
 For example, this can be all the possible products in a groceries store.
 Suppose we have a set of $\mathit{n}$ transactions $\transaction{} = \transactionDef{}$, where $\transaction{i}$ is a composition of items from $\universeOfItemset$, with $i$ is the \ac{tid}.
 This in turn, could be possible transactions at a groceries store.
-Intuitively, we can see that the size of $\universeOfItemset$ is usually much larger than the size of $\transaction{}$: $|\universeOfItemset| \gg |\transaction{} |$.
+Intuitively, the size of $\universeOfItemset$ is usually much larger than the size of $\transaction{}$.
 
 Such a collection of transactions can be represented in binary representation, where all records have the same length, and each record represents a transaction.
 One item in $\universeOfItemset$ will have it own same position in all records.
@@ -36,49 +37,52 @@ The presence of the $\mathit{j}$th item in the $\mathit{i}$th transaction is rec
 
 A set of items in $\universeOfItemset$ is an \textit{itemset}.
 We refer to a set of $k$ items as \kItemset.
-The \textit{support} of an itemset is the set of transactions those contain the itemset.
-We might also encounter an alternative way of defining \textit{support} in other literatures where it is defined as the frequency where an itemset appears in as a subset of a transaction in the dataset.
+The \textit{support} of an itemset is the set of transactions which contains the itemset.
+We might also encounter an alternative way of defining \textit{support} in other literatures where it is defined as the frequency which an itemset appears in as a subset of a transaction in the dataset.
 Let us agree that the notation \textit{support} in the scope of this thesis is referring to the first definition above, where the support is a set.
+We will call the number of transactions in the that set \textit{support count}, and the fraction of the support count vs the number of all transactions frequency ($\mathit{freq}$): 
+\begin{equation}
+    \frequency{I} = \frac{\lvert\support{I}\rvert}{\lvert\transaction{}\rvert}
+\end{equation}
 
 \begin{definition}[Support]
     The support of an itemset $\itemset$ is defined as the set of transactions in the database $\transaction{} = \transactionDef{}$ that contains $\itemset$ as a subset.
     The support of itemset $\itemset$ is denoted by $\support{I}$.
 \end{definition}
 For example in \autoref{tab:binary-prepresentation}, $\support{\{I1, I3\}} = \{T105, T106\}$.
-% The accuracy is $\lvert\support{\{I1, I3\}}\rvert=2/6=0.(3)$.
-The aim of \acl{fim} is to find the itemsets with support's sizes above a predefined \ac{minsup}.
+The frequency is calculated by $\frequency{\{I1, I3\}}=2/6=0.(3)$.
+The aim of \acl{fim} is to find the itemsets with support count above a predefined \ac{minsup}.
 
 \begin{definition}[\Acl{fim} \citep{Aggarwal15}]
-    Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined fraction $\minsup$ of the transactions in $\transaction{}$.
+    Given a set of transactions $\transaction{} = \transactionDef{}$, where each transaction $\transaction{i}$ is a subset of items from $\universeOfItemset$, determine all itemsets $\itemset$ that occur as a subset of at least a predefined $\minsup$ of the transactions in $\transaction{}$.
 \end{definition}
 
 In addition to normal frequent itemset, there are two useful extended concepts of frequent itemset: closed frequent itemset and maximal frequent itemset.
-An itemset $X$ is closed, if none of its supersets have exactly the same support count as $X$ \cite{Aggarwal15}.
-A closed frequent itemset is both closed and frequent.
+An itemset $X$ is closed, if none of its supersets have exactly the same support count as $X$~\cite{Aggarwal15}.
+A closed frequent itemset is an itemset that is both closed and frequent.
 \begin{definition}[Closed frequent itemset ]
-    Given $X$ and $Y$ are frequent itemsets at minimum support minsup, $X$ is a closed frequent itemset if:
+    With $Y$ is an itemset and $X$ is a frequent itemsets, $X$ is a closed frequent itemset if:
     \begin{equation}
         \forall Y \supset X, \supportcount{Y} < \supportcount{X}
     \end{equation}
 \end{definition}
 
-A frequent itemset is maximal if none of it superset is frequent \cite{Aggarwal15}.
+A frequent itemset is maximal if none of it superset is frequent~\cite{Aggarwal15}.
 
-\begin{definition}
-    Let $F$ is the set of all frequent itemsets. $X$ and $Y$ are frequent itemsets in $F$. $X$ is maximal frequent itemset if:
+\begin{definition}[Maximal frequent itemset]
+    Let $F$ is the set of all frequent itemsets in a dataset. $X$ is a frequent itemset in $F$. $X$ is maximal frequent itemset if:
     \begin{equation}
-        \forall Y \supset X, Y \notin F
+        \nexists Y \in F \mid X \in F \wedge X \subset Y
     \end{equation}
 \end{definition}
 
 There are several observations we can make here:
 \begin{itemize}
-    \item Let $F$ is the set of all frequent itemsets, $C$ is the set of all closed frequent itemsets, and $M$ is the set of all maximal frequent itemsets. $M \subset C \subset F$.
-    \item Closed frequent itemsets keep all the information about all the frequent itemsets. In other words, we can restore the supports of any frequent itemset from the closed frequent itemsets.
-    \item Maximal frequent itemsets do not keep all information about all the frequent itemsets. We only know that all of their subsets are frequent, but we do not know the supports of them.
+    \item Let $F$ is the set of all frequent itemsets, $C$ is the set of all closed frequent itemsets, and $M$ is the set of all maximal frequent itemsets. $M \subseteq C \subseteq F$.
+    \item Closed frequent itemsets keep all the information, such as supports of the subsets. In other words, we can restore the supports of any frequent itemset from the closed frequent itemsets.
+    \item Maximal frequent itemsets do not keep all information about all the frequent itemsets. We only know that all of their subsets are frequent, but we cannot determine their supports.
 \end{itemize}
 
-\label{sub:association_rule_mining}
 \Ac{fim} is the first phase of \ac{arm}.
 In the following phase, the output of \ac{fim} can be further processed to find the association rules with \acl{arm}.
 The result of this step is a set of rules that can be used to predict the behavior of the users.
@@ -89,7 +93,7 @@ In order to determine whether a rule is trustworthy or not, we need to introduce
 The confidence of a rule $X \Rightarrow Y$ is the fraction of transactions containing $X$, which also contain $Y$.
 \begin{definition}[Confidence \citep{Aggarwal15}]
     Let $X$ and $Y$ be two set of items.
-    The confidence $\mathit{conf}(X \cup Y)$ of the rule $X \cup Y$ is the conditional probability of $X \cup Y$ occurring in a transaction, given that the transaction contains $X$.
+    The confidence $\confident{X}{Y}$ of the rule $X \Rightarrow Y$ is the conditional probability of $X \cup Y$ occurring in a transaction, given that the transaction contains $X$.
     Therefore, the confidence $\mathit{conf}(X \cup Y)$ is defined as follows:
     \begin{equation}
         \confident{X}{Y} = \frac{\supportcount{X \cup Y}}{\supportcount{X}}
@@ -103,11 +107,11 @@ Hence, the confidence of the rule $\text{\{I1, I3\}} \Rightarrow \text{\{I2, I4\
 
 Now since we have the confidence, the definition of an association rule can be presented as follows:
 \begin{definition}[Association rules \citep{Aggarwal15}]
-    Let $A$ and $B$ be two sets of items.
-    The rule $A \Rightarrow B$ is said to be valid at support level $s$ and confidence level $c$, if the following conditions are satisfied:
+    Let $X$ and $Y$ be two sets of items.
+    The rule $X \Rightarrow Y$ is said to be valid at support level $s$ and confidence level $c$, if the following conditions are satisfied:
     \begin{enumerate}
-        \item The support of the item set $A$ is at least $s$;
-        \item The confidence of $A \Rightarrow B$ is at least $c$;
+        \item The support of the item set $X$ is at least $s$;
+        \item The confidence of $X \Rightarrow Y$ is at least $c$;
     \end{enumerate}
     The first criterion ensures that a sufficient number of transactions are relevant to the rule; therefore, it has the required critical mass for it to be considered relevant to the application at hand.
     The second criterion ensures that the rule has sufficient strength in terms of conditional probabilities.
@@ -204,21 +208,21 @@ Hence, it is not reasonable to enumerate all possible itemsets, since a lot of c
 Instead, we need some better strategy for traversing it.
 
 A sensible approach to improve this is to reduce the search space by pruning some candidates, or better not generating those that we know they will not be frequent.
-We know that if an itemset $I$ exists in a transaction, then all of its subsets $J_1, J_2, \dots, J_k$ must also exist in the transaction.
-Hence, the number of transactions that one subset $J_i$ can be found in is always larger or equal to the corresponding value of the itemset $I$.
+We know that if an itemset $I$ exists in a transaction, then all of its subsets $X_1, X_2, \dots, X_k$ must also exist in the transaction.
+Hence, the number of transactions that one subset $X_i$ can be found in is always larger or equal to the corresponding value of the itemset $I$.
 This is called the \acl{smp}:
 \begin{definition}[\Acl{smp} \citep{Aggarwal15}]
-    The support count of every subset $J$ of $I$ is at least equal to that of the support count of itemset $I$.
+    The support count of every subset $X$ of $Y$ is at least equal to that of the support count of itemset $Y$.
     \begin{equation}
-        \supportcount{J} \geq \supportcount{I} \quad \forall J \subseteq I
+        \supportcount{X} \geq \supportcount{Y} \quad \forall X \subseteq Y
     \end{equation}
 \end{definition}
 
-The direct implication from the \acl{smp} is that every subset $J_i$ of a frequent itemset $I$ is also frequent.
+The direct implication from the \acl{smp} is that every subset $X_i$ of a frequent itemset $Y$ is also frequent.
 This is also called the \acl{dcp} \citep{Aggarwal15}.
-We can apply this property in the opposite direction, that is, if a subset $J$ is not frequent, then noen of its supersets $I_1, I_2, \dots, I_k$ can be frequent.
-For example in the \autoref{fig:item-lattice}, if during the searching, we found out that $J = \{I1, I2\}$ is not frequent, then all the supersets of $J$, e.g. $\{I1, I2, I3\}, \{I1, I2 , I4\}, \{I1, I2 , I3, I4\}$, cannot be frequent.
-We can then drop all supersets of ${J = \{I1, I2\}}$ from the search space.
+We can apply this property in the opposite direction, that is, if a itemset $X$ is not frequent, then none of its supersets $Y_1, Y_2, \dots, Y_k$ can be frequent.
+For example in the \autoref{fig:item-lattice}, if during the searching, we found out that $X = \{I1, I2\}$ is not frequent, then all the supersets of $X$, e.g. $\{I1, I2, I3\}, \{I1, I2 , I4\}, \{I1, I2 , I3, I4\}$, cannot be frequent.
+We can then drop all supersets of ${Y = \{I1, I2\}}$ from the search space.
 This is a huge advantage since it allows us to stop searching early for all the supersets if we know that one of the subsets is not frequent.
 What we have here is essentially the core of the \acl{apriori}, where the \acl{dcp} is applied to a \ac{ne}.
 By utilizing the simple \acl{dcp} property above, the amount of candidates we have to process is drastically reduced.
@@ -273,12 +277,12 @@ We will later study one of such algorithm: the \acl{fpg} in \autoref{sub:fp-grow
     \centering
     \begin{tabular}{|l|l|c|}
         \hline
-        \textbf{Itemset} & \textbf{TID list}                        & \textbf{Binary presentation} \\ \hline
-        I1               & T100, T400, T500, T700, T800, T900       & \texttt{100110111}           \\ \hline
-        I2               & T100, T200, T300, T400, T600, T800, T900 & \texttt{111101011}           \\ \hline
-        I3               & T300, T500, T600, T700, T800, T900       & \texttt{001011111}           \\ \hline
-        I4               & T200, T400                               & \texttt{010100000}           \\ \hline
-        I5               & T100, T800                               & \texttt{100000010}           \\ \hline
+        \textbf{Items}   & \textbf{TID lists}                             & \textbf{Binary presentation} \\ \hline
+        I1               & \{ T100, T400, T500, T700, T800, T900 \}       & \texttt{100110111}           \\ \hline
+        I2               & \{ T100, T200, T300, T400, T600, T800, T900 \} & \texttt{111101011}           \\ \hline
+        I3               & \{ T300, T500, T600, T700, T800, T900 \}       & \texttt{001011111}           \\ \hline
+        I4               & \{ T200, T400 \}                               & \texttt{010100000}           \\ \hline
+        I5               & \{ T100, T800 \}                               & \texttt{100000010}           \\ \hline
         \end{tabular}
     \caption{The transactional database in vertical format \citep{han2012mining}}
     \label{tab:vertical-transactional-database}
@@ -332,7 +336,7 @@ If the size of the intersection is smaller than the \ac{minsup}, then we will re
 The result will be similar to the \autoref{tab:2-itemsets-eclat}.
 We recursively repeat this step until the no more itemsets can be generated.
 The output for the 3-itemsets is shown in the \autoref{tab:3-itemsets-eclat}.
-From here, we can use the \ac{arm} presented in \autoref{sub:association_rule_mining} to generate association rules.
+From here, we can use the \acl{arm} presented in \autoref{sub:association_rule_mining} to generate association rules.
 
 \begin{table}[]
     \centering

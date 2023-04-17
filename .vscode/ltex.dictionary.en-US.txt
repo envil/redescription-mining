@@ -5,3 +5,4 @@ Apriori
 itemsets
 Monotonicity
 redescriptions
+Jaccard

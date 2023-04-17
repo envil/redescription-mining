@@ -35,11 +35,12 @@ It can be used to find novel links or patterns in huge collections of data in a 
 % Inspired by the vegetable theme of the example in \autoref{sec:fim}, we continued with the foods and drinks topic.
 For instance, let us consider the same market basket data example from \autoref{sub:eclat}.
 Assume each column represents occurrences of some item in all the transactions.
-We assign each column to an item in the market: \{I1: Bread, I2: Butter, I3: Milk, I4: Coke, I5: Jam\}.
-We also divide the dataset by foods vs drinks, the result is a pair of data tables in \autoref{tab:market-basket-redescription}.
+We can assign each column to an item in the market similar to how we name it in \autoref{tab:binary-prepresentation}: \{I1: Bread, I2: Butter, I3: Milk, I4: Coke, I5: Jam\}.
+We can also divide the dataset by foods vs drinks because redescription mining requires at least two views to operate.
+The result is a pair of data tables in \autoref{tab:market-basket-redescription}.
 With this example, we want to understand the connections between the purchasing behaviors of foods and drinks.
 
-Here we follow the formalism of \cite{Galbrun-Methods}.
+Here we follow the formalism of~\cite{Galbrun-Methods}.
 The redescription mining data model $\mathcal{D}$ is a tuple of 3 sets: $\left( entity\;\mathcal{E}, attributes\;\mathcal{A}, views\;\mathcal{V} \right)$.
 Each entity $e \in \mathcal{E}$ is associated with a set of attributes $a \in \mathcal{A}$.
 The attributes are partitioned into disjoint \emph{views} $v \in \mathcal{V}$ that correspond to logical groups of attributes. Each view can be thought of as a data table, where the columns represent the attributes, and the rows represent the entities, which map across the different tables.
@@ -66,7 +67,7 @@ The Jaccard distance is based on the \acl{JSI}.
     \end{equation}
 \end{definition}
 
-The requirement to calculate $J$ is obviously that none of $\support{q}$ and $\support{p}$ equals $\emptyset$.
+The requirement to calculate $J$ is obviously that at least one of $\support{q}$ and $\support{p}$ is not $\emptyset$.
 
 % \begin{definition}[Jaccard distance \citep{galbrun2018redescription}]
 %     The Jaccard distance is then defined as:
@@ -79,7 +80,7 @@ The requirement to calculate $J$ is obviously that none of $\support{q}$ and $\s
 Clearly, the bigger the \acl{JSI} is, the more accurate the redescription is.
 When the similarity between the two queries equals to $1$, the redescription is called \textit{exact}, and is denoted as $p \equiv q$.
 Intuitively, Jaccard similarity index is the fraction between the overlap of two supports of two queries versus the union of them.
-Jaccard index is closely correlated to the confidence in \acl{arm}.
+Jaccard index is closely related to the confidence in \acl{arm}.
 Suppose all the attributes are Boolean and the queries are monotone conjunctive.
 A redescription $\left(p,q\right)$ can be considered as $p \Rightarrow q$ and $q \Rightarrow p$.
 Given that $\confident{p}{q}=\supportcount{p \cup q}/\supportcount{p}=\lvert \support{p} \cap \support{q}\rvert/\support{p}$;
